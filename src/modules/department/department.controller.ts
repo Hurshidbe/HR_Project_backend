@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/department.dto';
+import { CustomBackendResponse } from 'src/interceptors/backend.response';
+import { response } from 'express';
 
 @Controller('departments')
 export class DepartmentController {
@@ -17,46 +19,61 @@ export class DepartmentController {
 
   @Post()
   create(@Body() dto: CreateDepartmentDto) {
+    let response: CustomBackendResponse;
     try {
-      return this.departmentService.create(dto);
+      const created = this.departmentService.create(dto);
+      response = new CustomBackendResponse(true, created);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Get()
-  findAll() {
+  async findAll() {
+    let response: CustomBackendResponse;
     try {
-      return this.departmentService.findAll();
+      const data = await this.departmentService.findAll();
+      response = new CustomBackendResponse(true, { data });
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
+    let response: CustomBackendResponse;
     try {
-      return this.departmentService.findOne(id);
+      const data = await this.departmentService.findOne(id);
+      response = new CustomBackendResponse(true, { data });
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: CreateDepartmentDto) {
+  async update(@Param('id') id: string, @Body() dto: CreateDepartmentDto) {
+    let response: CustomBackendResponse;
     try {
-      return this.departmentService.update(id, dto);
+      const updated = await this.departmentService.update(id, dto);
+      response = new CustomBackendResponse(true, { updated });
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    let response: CustomBackendResponse;
     try {
-      return this.departmentService.remove(id);
+      const removed = await this.departmentService.remove(id);
+      response = new CustomBackendResponse(true, { removed });
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 }

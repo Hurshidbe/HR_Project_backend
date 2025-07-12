@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { PositionService } from './position.service';
 import { CreatePositionDto } from './dto/position.dto';
+import { CustomBackendResponse } from 'src/interceptors/backend.response';
 
 @Controller('position')
 export class PositionController {
@@ -17,46 +18,61 @@ export class PositionController {
 
   @Post()
   async create(@Body() data: CreatePositionDto) {
+    let response: CustomBackendResponse;
     try {
-      return await this.positionService.create(data);
+      const created = await this.positionService.create(data);
+      response = new CustomBackendResponse(true, { created }, []);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Get()
   async findAll() {
+    let response: CustomBackendResponse;
     try {
-      return await this.positionService.getAll();
+      const data = await this.positionService.getAll();
+      response = new CustomBackendResponse(true, { data }, []);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    let response: CustomBackendResponse;
     try {
-      return await this.findOne(id);
+      const data = await this.findOne(id);
+      response = new CustomBackendResponse(true, { data }, []);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, data: CreatePositionDto) {
+    let response: CustomBackendResponse;
     try {
-      return await this.positionService.update(id, data);
+      const updated = await this.positionService.update(id, data);
+      response = new CustomBackendResponse(true, { updated }, []);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 
   @Delete(':id')
   async deleteOne(@Param('id') id: string) {
+    let response: CustomBackendResponse;
     try {
-      return await this.positionService.delete(id);
+      const deleted = await this.positionService.delete(id);
+      response = new CustomBackendResponse(true, { deleted }, []);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
+    return response;
   }
 }

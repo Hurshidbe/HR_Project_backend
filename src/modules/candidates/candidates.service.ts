@@ -25,7 +25,7 @@ export class CandidatesService {
     return candidate.save();
   }
 
-  async filterCandidates(filter: FilterQuery<Candidate>) {
+  async getAll(filter: FilterQuery<Candidate>) {
     return this.CandidateRepo.find(filter);
   }
 

@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
     try {
       const decoded = await this.jwt.verifyAsync(token);
       req.user = decoded;
-      //   console.log(decoded);
       return true;
     } catch (error) {
       throw new HttpException('token expired', 402);
