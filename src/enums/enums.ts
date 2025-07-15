@@ -1,3 +1,5 @@
+import { Employee } from 'src/modules/employee/entities/employee.schema';
+
 export enum Sex {
   male = 'male',
   famale = 'famale',
@@ -47,4 +49,10 @@ export enum Statuses {
 export enum UserRole {
   SuperAdmin = 'superadmin',
   Admin = 'admin',
+}
+
+export enum EmployeeStatusEnum {
+  working = 'working',
+  fired = 'fired',
+  probation = 'probation',
 }

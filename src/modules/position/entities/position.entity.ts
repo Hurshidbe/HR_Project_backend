@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Types } from 'mongoose';
+import mongoose, { mongo, Types } from 'mongoose';
 import { ref } from 'process';
 
 @Schema({ timestamps: true })

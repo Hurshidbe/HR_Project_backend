@@ -13,16 +13,19 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CandidatesService } from './candidates.service';
-import { CreateCandidateDto } from './dto/candidate.dto';
+import { CreateCandidateDto, PartEmployeeDto } from './dto/candidate.dto';
 import { dynamicCloudinaryStorage } from 'src/interceptors/cloudinary.config';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from './entities/candidate.schema';
-import { Statuses } from 'src/enums/enums';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
+import { EmployeeService } from '../employee/employee.service';
 
 @Controller('candidates')
 export class CandidatesController {
-  constructor(private readonly candidatesService: CandidatesService) {}
+  constructor(
+    private readonly candidatesService: CandidatesService,
+    private readonly EmployeeService: EmployeeService,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -62,15 +65,31 @@ export class CandidatesController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
-  async updateStatus(
-    @Param('id') id: string,
-    @Query('status') status: Statuses,
-  ) {
+  @Patch(':id/reject')
+  async rejectCandidate(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {
-      const updated = await this.candidatesService.updateStatus(id, status);
-      response = new CustomBackendResponse(true, updated);
+      const rejected = await this.candidatesService.rejectCandidate(id);
+      response = new CustomBackendResponse(true, rejected);
+    } catch (error) {
+      response = new CustomBackendResponse(false, {}, [error.message]);
+    }
+    return response;
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id/accept')
+  async acceptCandidate(@Param('id') id: string, @Body() dto: PartEmployeeDto) {
+    let response: CustomBackendResponse;
+    try {
+      const accepted = await this.candidatesService.acceptCandidate(
+        id,
+        dto.department,
+        dto.position,
+        dto.salary,
+        dto.EmployeeStatus,
+      );
+      response = new CustomBackendResponse(true, { accepted });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }

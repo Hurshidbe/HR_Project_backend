@@ -11,6 +11,7 @@ import { SeedModule } from './seed/seed.module';
 import { RoleGuard } from './guards/role.guard';
 import { DepartmentModule } from './modules/department/department.module';
 import { PositionModule } from './modules/position/position.module';
+import { EmployeeModule } from './modules/employee/employee.module';
 dotenv.config();
 
 @Module({
@@ -33,6 +34,7 @@ dotenv.config();
     CandidatesModule,
     DepartmentModule,
     PositionModule,
+    EmployeeModule,
   ],
   controllers: [],
   providers: [AuthGuard, RoleGuard],

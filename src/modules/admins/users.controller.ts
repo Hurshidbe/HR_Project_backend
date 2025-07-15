@@ -31,6 +31,7 @@ export class UsersController {
       const { status, token } = await this.usersService.login(data);
       res.cookie('authToken', token, { httpOnly: true });
       response = new CustomBackendResponse(true, { status });
+      return res.status(200).json(response);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }

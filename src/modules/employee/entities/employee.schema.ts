@@ -1,28 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Types } from 'mongoose';
+import { ref } from 'process';
 import {
   DrivingGrade,
-  LangGrade,
+  EmployeeStatusEnum,
   Region,
   Sex,
   Statuses,
 } from 'src/enums/enums';
-import { Document } from 'mongoose';
+import { LangGradeSchema } from 'src/modules/candidates/entities/candidate.schema';
+import { Department } from 'src/modules/department/entities/department.entity';
+import { Position } from 'src/modules/position/entities/position.entity';
 
-// 1. LangGrade subdocument schema
-@Schema({ _id: false })
-export class LangGradeSchema {
-  @Prop({ required: true })
-  language: string;
-
-  @Prop({ type: String, enum: LangGrade, required: true })
-  grade: LangGrade;
-}
-export const LangGradeSchemaFactory =
-  SchemaFactory.createForClass(LangGradeSchema);
-
-// 2. Candidate schema
 @Schema({ timestamps: true })
-export class Candidate extends Document {
+export class Employee {
   @Prop({ required: false })
   photo: string;
 
@@ -99,7 +90,7 @@ export class Candidate extends Document {
   computerSkills: string[];
 
   @Prop()
-  proSkills: string;
+  proSkills: string[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
@@ -115,9 +106,26 @@ export class Candidate extends Document {
 
   @Prop({ type: [String], default: [], required: false })
   certificates: string[];
+  ///////////////////////////////////////////////////////////////
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Department',
+    required: true,
+  })
+  department: Department;
 
-  @Prop({ default: Statuses.process })
-  status: Statuses;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Position',
+    required: true,
+  })
+  position: Position;
+
+  @Prop({ required: false, default: 0 })
+  salary: number;
+
+  @Prop({ required: true })
+  EmployeeStatus: EmployeeStatusEnum;
 }
 
-export const CandidateSchema = SchemaFactory.createForClass(Candidate);
+export const EmployeeSchema = SchemaFactory.createForClass(Employee);

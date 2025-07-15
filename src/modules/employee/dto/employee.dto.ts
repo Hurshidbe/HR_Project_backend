@@ -1,35 +1,17 @@
-import {
-  IsString,
-  IsOptional,
-  IsEnum,
-  IsBoolean,
-  IsDateString,
-  IsArray,
-  ValidateNested,
-  isString,
-} from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import {
-  DrivingGrade,
-  EmployeeStatusEnum,
-  LangGrade,
-  Region,
-  Sex,
-  Statuses,
-} from 'src/enums/enums';
-import { Department } from 'src/modules/department/entities/department.entity';
-import { Position } from 'src/modules/position/entities/position.entity';
-import { Employee } from 'src/modules/employee/entities/employee.schema';
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { DrivingGrade, Region, Sex } from 'src/enums/enums';
+import { LangGradeDto } from 'src/modules/candidates/dto/candidate.dto';
 
-export class LangGradeDto {
-  @IsString()
-  language: string;
-
-  @IsString()
-  grade: string;
-}
-
-export class CreateCandidateDto {
+export class CreateEmployeeDto {
   @IsOptional()
   @IsString()
   photo?: string;
@@ -103,7 +85,7 @@ export class CreateCandidateDto {
   @Transform(({ value }) => {
     if (typeof value === 'string') {
       try {
-        return JSON.parse(value.trim()); // <-- bu xatoni tuzatadi
+        return JSON.parse(value.trim());
       } catch (e) {
         console.error('langGrades parse error:', e);
         return [];
@@ -151,17 +133,6 @@ export class CreateCandidateDto {
   @IsString()
   moreInfo: string;
 
-  @IsOptional()
-  @IsEnum(Statuses)
-  status?: Statuses;
-
   @IsString()
   certificates: string[];
-}
-
-export class PartEmployeeDto {
-  department: Department;
-  salary: number;
-  position: Position;
-  EmployeeStatus: EmployeeStatusEnum;
 }

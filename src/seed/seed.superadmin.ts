@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SeedModule } from './seed.module';
 import { UserRole } from 'src/enums/enums';
 import { UsersService } from 'src/modules/admins/users.service';
+import { error } from 'console';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(SeedModule);
