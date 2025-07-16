@@ -8,104 +8,54 @@ import {
   Sex,
   Statuses,
 } from 'src/enums/enums';
-import { LangGradeSchema } from 'src/modules/candidates/entities/candidate.schema';
+import {
+  Course,
+  Education,
+  Experience,
+  JobRequirements,
+  LangGradeSchema,
+  PersonalInfo,
+} from 'src/modules/candidates/entities/candidate.schema';
 import { Department } from 'src/modules/department/entities/department.entity';
 import { Position } from 'src/modules/position/entities/position.entity';
 
 @Schema({ timestamps: true })
 export class Employee {
-  @Prop({ required: false })
-  photo: string;
+  @Prop({ type: PersonalInfo })
+  personalInfo: PersonalInfo[];
 
-  @Prop()
-  fullName: string;
+  @Prop({ type: JobRequirements })
+  jobRequirements: JobRequirements[];
 
-  @Prop({ type: String, enum: Sex })
-  sex: Sex;
+  @Prop({ default: [] })
+  experience: Experience[];
 
-  @Prop()
-  birthDate: Date;
+  @Prop({ default: [] })
+  education: Education[];
 
-  @Prop()
-  phoneNumber: string;
-
-  @Prop()
-  email: string;
-
-  @Prop()
-  tgUsername: string;
-
-  @Prop({ type: String, enum: Region })
-  region: Region;
-
-  @Prop()
-  address: string;
-
-  @Prop()
-  profession: string;
-
-  @Prop()
-  workPosition: string;
-
-  @Prop()
-  workSalary: string;
-
-  @Prop()
-  experiencePosition: string;
-
-  @Prop()
-  experienceCompany: string;
-
-  @Prop()
-  experienceSalary: string;
-
-  @Prop()
-  experienceStart: Date;
-
-  @Prop()
-  experienceEnd: Date;
-
-  @Prop()
-  educationName: string;
-
-  @Prop()
-  educationSpeciality: string;
-
-  @Prop()
-  educationStarted: Date;
-
-  @Prop()
-  educationEnded: Date;
-
-  @Prop()
-  courseName: string;
-
-  @Prop()
-  courseProfession: string;
+  @Prop({ default: [] })
+  course: Course[];
 
   @Prop({ type: [LangGradeSchema], default: [] })
   langGrades: LangGradeSchema[];
 
-  @Prop({ type: [String], default: [] })
-  computerSkills: string[];
-
   @Prop()
-  proSkills: string[];
+  hardSkills: string[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
 
   @Prop({ type: String, default: DrivingGrade.No })
-  drivingGrade: DrivingGrade;
+  drivingLicence: DrivingGrade;
 
   @Prop({ default: false })
-  convicted: boolean;
+  criminalRecord: boolean;
 
   @Prop()
-  moreInfo: string;
+  extraInfo: string;
 
-  @Prop({ type: [String], default: [], required: false })
-  certificates: string[];
+  // @Prop({ type: [String], default: [], required: false })
+  // certificates: string[];
   ///////////////////////////////////////////////////////////////
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

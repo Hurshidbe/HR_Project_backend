@@ -20,6 +20,13 @@ import {
 import { Department } from 'src/modules/department/entities/department.entity';
 import { Position } from 'src/modules/position/entities/position.entity';
 import { Employee } from 'src/modules/employee/entities/employee.schema';
+import {
+  Course,
+  Education,
+  Experience,
+  JobRequirements,
+  PersonalInfo,
+} from '../entities/candidate.schema';
 
 export class LangGradeDto {
   @IsString()
@@ -30,80 +37,38 @@ export class LangGradeDto {
 }
 
 export class CreateCandidateDto {
-  @IsOptional()
-  @IsString()
-  photo?: string;
-
-  @IsString()
-  fullName: string;
-
-  @IsEnum(Sex)
-  sex: Sex;
-
-  @IsDateString()
-  birthDate: Date;
-
-  @IsString()
-  phoneNumber: string;
-
-  @IsString()
-  email: string;
-
-  @IsString()
-  tgUsername: string;
-
-  @IsEnum(Region)
-  region: Region;
-
-  @IsString()
-  address: string;
-
-  @IsString()
-  profession: string;
-
-  @IsString()
-  workPosition: string;
-
-  @IsString()
-  workSalary: string;
-
-  @IsString()
-  experiencePosition: string;
-
-  @IsString()
-  experienceCompany: string;
-
-  @IsString()
-  experienceSalary: string;
-
-  @IsDateString()
-  experienceStart: Date;
-
-  @IsDateString()
-  experienceEnd: Date;
-
-  @IsString()
-  educationName: string;
-
-  @IsString()
-  educationSpeciality: string;
-
-  @IsDateString()
-  educationStarted: Date;
-
-  @IsDateString()
-  educationEnded: Date;
-
-  @IsString()
-  courseName: string;
-
-  @IsString()
-  courseProfession: string;
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value.trim());
+      } catch (e) {
+        console.error('personalInfo parse error:', e);
+        return [];
+      }
+    }
+    return value;
+  })
+  @IsArray()
+  personalInfo: PersonalInfo[];
 
   @Transform(({ value }) => {
     if (typeof value === 'string') {
       try {
-        return JSON.parse(value.trim()); // <-- bu xatoni tuzatadi
+        return JSON.parse(value.trim());
+      } catch (e) {
+        console.error('jobRequirements parse error', e);
+        return [];
+      }
+    }
+    return value;
+  })
+  @IsArray()
+  jobRequirements: JobRequirements[];
+
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value.trim());
       } catch (e) {
         console.error('langGrades parse error:', e);
         return [];
@@ -124,11 +89,47 @@ export class CreateCandidateDto {
     }
   })
   @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Experience)
+  experience: Experience[];
+
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
+    }
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Course)
+  course: Course[];
+
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
+    }
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Education)
+  education: Education[];
+
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
+    }
+  })
+  @IsArray()
   @IsString({ each: true })
   computerSkills: string[];
 
   @IsString()
-  proSkills: string;
+  proSkills: string[];
 
   @Transform(({ value }) => {
     try {
@@ -159,7 +160,7 @@ export class CreateCandidateDto {
   certificates: string[];
 }
 
-export class PartEmployeeDto {
+export class AcceptEmployeeDto {
   department: Department;
   salary: number;
   position: Position;

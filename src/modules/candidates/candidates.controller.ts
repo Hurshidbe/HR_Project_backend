@@ -13,12 +13,12 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CandidatesService } from './candidates.service';
-import { CreateCandidateDto, PartEmployeeDto } from './dto/candidate.dto';
 import { dynamicCloudinaryStorage } from 'src/interceptors/cloudinary.config';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from './entities/candidate.schema';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { EmployeeService } from '../employee/employee.service';
+import { AcceptEmployeeDto, CreateCandidateDto } from './dto/candidate.dto';
 
 @Controller('candidates')
 export class CandidatesController {
@@ -40,7 +40,7 @@ export class CandidatesController {
     let response: CustomBackendResponse;
     try {
       const photoPath = files.photo?.[0]?.path || '';
-      data.photo = photoPath;
+      data.personalInfo['photo'] = photoPath;
       const savedData = await this.candidatesService.create(data, photoPath);
       response = new CustomBackendResponse(true, savedData);
     } catch (error) {
@@ -79,7 +79,10 @@ export class CandidatesController {
 
   @UseGuards(AuthGuard)
   @Patch(':id/accept')
-  async acceptCandidate(@Param('id') id: string, @Body() dto: PartEmployeeDto) {
+  async acceptCandidate(
+    @Param('id') id: string,
+    @Body() dto: AcceptEmployeeDto,
+  ) {
     let response: CustomBackendResponse;
     try {
       const accepted = await this.candidatesService.acceptCandidate(

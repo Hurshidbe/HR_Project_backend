@@ -9,112 +9,91 @@ import {
 import { Document } from 'mongoose';
 
 // 1. LangGrade subdocument schema
-@Schema({ _id: false })
 export class LangGradeSchema {
-  @Prop({ required: true })
   language: string;
-
-  @Prop({ type: String, enum: LangGrade, required: true })
   grade: LangGrade;
 }
-export const LangGradeSchemaFactory =
-  SchemaFactory.createForClass(LangGradeSchema);
 
-// 2. Candidate schema
+// Experience subdocument schema
+export class Experience {
+  Position: string;
+  Company: string;
+  Salary: string;
+  StartDate: Date;
+  EndDate: Date;
+}
+
+// Education subdocument schema
+export class Education {
+  Name: string;
+  Speciality: string;
+  StartedDate: Date;
+  EndedDate: Date;
+}
+
+// Courses subdocument schema
+
+export class Course {
+  Name: string;
+  Profession: string;
+}
+
+export class PersonalInfo {
+  photo: string;
+  fullName: string;
+  sex: Sex;
+  birthDate: Date;
+  phoneNumber: string;
+  email: string;
+  tgUsername: string;
+  region: Region;
+  address: string;
+  occupation: string;
+}
+
+export class JobRequirements {
+  position: string;
+  salary: string;
+}
+
+//Candidate schema
 @Schema({ timestamps: true })
 export class Candidate extends Document {
-  @Prop({ required: false })
-  photo: string;
+  @Prop({ type: PersonalInfo, default: [] })
+  personalInfo: PersonalInfo[];
 
-  @Prop()
-  fullName: string;
+  @Prop({ type: JobRequirements })
+  jobRequirements: JobRequirements[];
 
-  @Prop({ type: String, enum: Sex })
-  sex: Sex;
+  @Prop({ type: [Experience], default: [] })
+  experience: Experience[];
 
-  @Prop()
-  birthDate: Date;
+  @Prop({ type: [Education], default: [] })
+  education: Education[];
 
-  @Prop()
-  phoneNumber: string;
-
-  @Prop()
-  email: string;
-
-  @Prop()
-  tgUsername: string;
-
-  @Prop({ type: String, enum: Region })
-  region: Region;
-
-  @Prop()
-  address: string;
-
-  @Prop()
-  profession: string;
-
-  @Prop()
-  workPosition: string;
-
-  @Prop()
-  workSalary: string;
-
-  @Prop()
-  experiencePosition: string;
-
-  @Prop()
-  experienceCompany: string;
-
-  @Prop()
-  experienceSalary: string;
-
-  @Prop()
-  experienceStart: Date;
-
-  @Prop()
-  experienceEnd: Date;
-
-  @Prop()
-  educationName: string;
-
-  @Prop()
-  educationSpeciality: string;
-
-  @Prop()
-  educationStarted: Date;
-
-  @Prop()
-  educationEnded: Date;
-
-  @Prop()
-  courseName: string;
-
-  @Prop()
-  courseProfession: string;
+  @Prop({ type: [Course], default: [] })
+  course: Course[];
 
   @Prop({ type: [LangGradeSchema], default: [] })
   langGrades: LangGradeSchema[];
 
-  @Prop({ type: [String], default: [] })
-  computerSkills: string[];
-
   @Prop()
-  proSkills: string;
+  hardSkills: string[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
 
   @Prop({ type: String, default: DrivingGrade.No })
-  drivingGrade: DrivingGrade;
+  drivingLicence: DrivingGrade[];
 
   @Prop({ default: false })
-  convicted: boolean;
+  criminalRecords: boolean;
 
   @Prop()
-  moreInfo: string;
+  extraInfo: string;
 
-  @Prop({ type: [String], default: [], required: false })
-  certificates: string[];
+  // @Prop({ type: [String], default: [], required: false })
+  // certificates: string[];
 
   @Prop({ default: Statuses.process })
   status: Statuses;

@@ -10,77 +10,64 @@ import {
 } from 'class-validator';
 import { DrivingGrade, Region, Sex } from 'src/enums/enums';
 import { LangGradeDto } from 'src/modules/candidates/dto/candidate.dto';
+import {
+  Course,
+  Education,
+  Experience,
+  JobRequirements,
+  PersonalInfo,
+} from 'src/modules/candidates/entities/candidate.schema';
 
 export class CreateEmployeeDto {
-  @IsOptional()
-  @IsString()
-  photo?: string;
+  @IsArray()
+  personalInfo: PersonalInfo[];
 
-  @IsString()
-  fullName: string;
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
+    }
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  jobRequirements: JobRequirements[];
 
-  @IsEnum(Sex)
-  sex: Sex;
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
+    }
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Experience)
+  experience: Experience[];
 
-  @IsDateString()
-  birthDate: Date;
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
+    }
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Course)
+  course: Course[];
 
-  @IsString()
-  phoneNumber: string;
-
-  @IsString()
-  email: string;
-
-  @IsString()
-  tgUsername: string;
-
-  @IsEnum(Region)
-  region: Region;
-
-  @IsString()
-  address: string;
-
-  @IsString()
-  profession: string;
-
-  @IsString()
-  workPosition: string;
-
-  @IsString()
-  workSalary: string;
-
-  @IsString()
-  experiencePosition: string;
-
-  @IsString()
-  experienceCompany: string;
-
-  @IsString()
-  experienceSalary: string;
-
-  @IsDateString()
-  experienceStart: Date;
-
-  @IsDateString()
-  experienceEnd: Date;
-
-  @IsString()
-  educationName: string;
-
-  @IsString()
-  educationSpeciality: string;
-
-  @IsDateString()
-  educationStarted: Date;
-
-  @IsDateString()
-  educationEnded: Date;
-
-  @IsString()
-  courseName: string;
-
-  @IsString()
-  courseProfession: string;
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
+    }
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Education)
+  education: Education[];
 
   @Transform(({ value }) => {
     if (typeof value === 'string') {
@@ -105,12 +92,8 @@ export class CreateEmployeeDto {
       return [];
     }
   })
-  @IsArray()
-  @IsString({ each: true })
-  computerSkills: string[];
-
   @IsString()
-  proSkills: string;
+  hardSkills: string;
 
   @Transform(({ value }) => {
     try {
@@ -124,15 +107,15 @@ export class CreateEmployeeDto {
   softSkills: string[];
 
   @IsEnum(DrivingGrade)
-  drivingGrade: DrivingGrade;
+  drivingLicence: DrivingGrade;
 
   @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean()
-  convicted: boolean;
+  criminalRecord: boolean;
 
   @IsString()
-  moreInfo: string;
+  extraInfo: string;
 
-  @IsString()
-  certificates: string[];
+  // @IsString()
+  // certificates: string[];
 }
