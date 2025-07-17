@@ -1,11 +1,12 @@
-import { NestFactory } from '@nestjs/core';
+import { APP_GUARD, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe, ArgumentsHost } from '@nestjs/common';
+import { ThrottlerGuard } from '@nestjs/throttler';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   app.use(cookieParser());
+
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.listen(process.env.PORT ?? 3000);
 }

@@ -12,10 +12,15 @@ import { RoleGuard } from './guards/role.guard';
 import { DepartmentModule } from './modules/department/department.module';
 import { PositionModule } from './modules/position/position.module';
 import { EmployeeModule } from './modules/employee/employee.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 dotenv.config();
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 20000, limit: 5 }],
+    }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MongooseModule.forRoot(process.env.DB_URL || ''),
     JwtModule.registerAsync({
@@ -37,6 +42,13 @@ dotenv.config();
     EmployeeModule,
   ],
   controllers: [],
-  providers: [AuthGuard, RoleGuard],
+  providers: [
+    AuthGuard,
+    RoleGuard,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
