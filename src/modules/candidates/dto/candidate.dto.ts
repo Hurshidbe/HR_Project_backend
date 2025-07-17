@@ -26,7 +26,7 @@ import {
   Experience,
   JobRequirements,
   PersonalInfo,
-} from '../entities/candidate.schema';
+} from 'src/types/object.types';
 
 export class LangGradeDto {
   @IsString()
@@ -38,43 +38,32 @@ export class LangGradeDto {
 
 export class CreateCandidateDto {
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      try {
-        return JSON.parse(value.trim());
-      } catch (e) {
-        console.error('personalInfo parse error:', e);
-        return [];
-      }
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
     }
-    return value;
   })
   @IsArray()
   personalInfo: PersonalInfo[];
 
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      try {
-        return JSON.parse(value.trim());
-      } catch (e) {
-        console.error('jobRequirements parse error', e);
-        return [];
-      }
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
     }
-    return value;
   })
+  @ValidateNested({ each: true })
   @IsArray()
   jobRequirements: JobRequirements[];
 
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      try {
-        return JSON.parse(value.trim());
-      } catch (e) {
-        console.error('langGrades parse error:', e);
-        return [];
-      }
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
     }
-    return value;
   })
   @IsArray()
   @ValidateNested({ each: true })

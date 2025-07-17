@@ -16,7 +16,7 @@ import {
   Experience,
   JobRequirements,
   PersonalInfo,
-} from 'src/modules/candidates/entities/candidate.schema';
+} from 'src/types/object.types';
 
 export class CreateEmployeeDto {
   @IsArray()
@@ -70,15 +70,11 @@ export class CreateEmployeeDto {
   education: Education[];
 
   @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      try {
-        return JSON.parse(value.trim());
-      } catch (e) {
-        console.error('langGrades parse error:', e);
-        return [];
-      }
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch {
+      return [];
     }
-    return value;
   })
   @IsArray()
   @ValidateNested({ each: true })

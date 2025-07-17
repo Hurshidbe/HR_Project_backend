@@ -7,54 +7,14 @@ import {
   Statuses,
 } from 'src/enums/enums';
 import { Document } from 'mongoose';
-
-// 1. LangGrade subdocument schema
-export class LangGradeSchema {
-  language: string;
-  grade: LangGrade;
-}
-
-// Experience subdocument schema
-export class Experience {
-  Position: string;
-  Company: string;
-  Salary: string;
-  StartDate: Date;
-  EndDate: Date;
-}
-
-// Education subdocument schema
-export class Education {
-  Name: string;
-  Speciality: string;
-  StartedDate: Date;
-  EndedDate: Date;
-}
-
-// Courses subdocument schema
-
-export class Course {
-  Name: string;
-  Profession: string;
-}
-
-export class PersonalInfo {
-  photo: string;
-  fullName: string;
-  sex: Sex;
-  birthDate: Date;
-  phoneNumber: string;
-  email: string;
-  tgUsername: string;
-  region: Region;
-  address: string;
-  occupation: string;
-}
-
-export class JobRequirements {
-  position: string;
-  salary: string;
-}
+import {
+  Course,
+  Education,
+  Experience,
+  JobRequirements,
+  LangGradeSchema,
+  PersonalInfo,
+} from 'src/types/object.types';
 
 //Candidate schema
 @Schema({ timestamps: true })

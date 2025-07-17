@@ -8,6 +8,9 @@ import {
   Sex,
   Statuses,
 } from 'src/enums/enums';
+
+import { Department } from 'src/modules/department/entities/department.entity';
+import { Position } from 'src/modules/position/entities/position.entity';
 import {
   Course,
   Education,
@@ -15,9 +18,7 @@ import {
   JobRequirements,
   LangGradeSchema,
   PersonalInfo,
-} from 'src/modules/candidates/entities/candidate.schema';
-import { Department } from 'src/modules/department/entities/department.entity';
-import { Position } from 'src/modules/position/entities/position.entity';
+} from 'src/types/object.types';
 
 @Schema({ timestamps: true })
 export class Employee {
