@@ -1,30 +1,30 @@
-import { LangGrade, Region, Sex } from 'src/enums/enums';
+import { Region, Sex } from 'src/enums/enums';
 
-// 1. LangGrade subdocument schema
-export class LangGradeSchema {
+export class LangGrade {
   language: string;
   grade: LangGrade;
 }
 
-// Experience subdocument schema
 export class Experience {
-  Position: string;
-  Company: string;
-  Salary: string;
-  StartDate: Date;
-  EndDate: Date;
+  osition: string;
+  company: string;
+  salary: string;
+  from: Date;
+  to: Date;
 }
 
 export class Education {
-  Name: string;
-  Speciality: string;
-  StartedDate: Date;
-  EndedDate: Date;
+  name: string;
+  speciality: string;
+  from: Date;
+  to: Date;
 }
 
 export class Course {
-  Name: string;
-  Profession: string;
+  name: string;
+  profession: string;
+  from: Date;
+  to: Date;
 }
 
 export class PersonalInfo {

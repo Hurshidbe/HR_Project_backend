@@ -12,7 +12,7 @@ import { Transform, Type } from 'class-transformer';
 import {
   DrivingGrade,
   EmployeeStatusEnum,
-  LangGrade,
+  LangGradeEnum,
   Region,
   Sex,
   Statuses,
@@ -115,10 +115,7 @@ export class CreateCandidateDto {
   })
   @IsArray()
   @IsString({ each: true })
-  computerSkills: string[];
-
-  @IsString()
-  proSkills: string[];
+  hardSkills: string[];
 
   @Transform(({ value }) => {
     try {
@@ -132,21 +129,21 @@ export class CreateCandidateDto {
   softSkills: string[];
 
   @IsEnum(DrivingGrade)
-  drivingGrade: DrivingGrade;
+  drivingLicence: DrivingGrade;
 
   @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean()
-  convicted: boolean;
+  criminalRecord: boolean;
 
   @IsString()
-  moreInfo: string;
+  extraInfo: string;
 
   @IsOptional()
   @IsEnum(Statuses)
   status?: Statuses;
 
-  @IsString()
-  certificates: string[];
+  // @IsString()
+  // certificates: string[];
 }
 
 export class AcceptEmployeeDto {

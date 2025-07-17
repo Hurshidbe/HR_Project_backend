@@ -1,18 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import {
-  DrivingGrade,
-  LangGrade,
-  Region,
-  Sex,
-  Statuses,
-} from 'src/enums/enums';
+import { DrivingGrade, Region, Sex, Statuses } from 'src/enums/enums';
 import { Document } from 'mongoose';
 import {
   Course,
   Education,
   Experience,
   JobRequirements,
-  LangGradeSchema,
+  LangGrade,
   PersonalInfo,
 } from 'src/types/object.types';
 
@@ -34,8 +28,8 @@ export class Candidate extends Document {
   @Prop({ type: [Course], default: [] })
   course: Course[];
 
-  @Prop({ type: [LangGradeSchema], default: [] })
-  langGrades: LangGradeSchema[];
+  @Prop({ type: [LangGrade], default: [] })
+  langGrades: LangGrade[];
 
   @Prop()
   hardSkills: string[];

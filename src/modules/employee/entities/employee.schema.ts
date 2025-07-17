@@ -16,7 +16,7 @@ import {
   Education,
   Experience,
   JobRequirements,
-  LangGradeSchema,
+  LangGrade,
   PersonalInfo,
 } from 'src/types/object.types';
 
@@ -37,8 +37,8 @@ export class Employee {
   @Prop({ default: [] })
   course: Course[];
 
-  @Prop({ type: [LangGradeSchema], default: [] })
-  langGrades: LangGradeSchema[];
+  @Prop({ type: [LangGrade], default: [] })
+  langGrades: LangGrade[];
 
   @Prop()
   hardSkills: string[];

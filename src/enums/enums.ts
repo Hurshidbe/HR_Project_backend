@@ -20,7 +20,7 @@ export enum Region {
   Xorazm = 'Xorazm',
 }
 
-export enum LangGrade {
+export enum LangGradeEnum {
   No = 'No',
   A1 = 'A1',
   A2 = 'A2',
