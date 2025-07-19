@@ -28,7 +28,6 @@ export class Course {
 }
 
 export class PersonalInfo {
-  photo: string;
   fullName: string;
   sex: Sex;
   birthDate: Date;

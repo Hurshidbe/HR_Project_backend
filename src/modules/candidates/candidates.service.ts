@@ -20,13 +20,10 @@ export class CandidatesService {
     @InjectModel(Employee.name) private EmployeeRepo: Model<Employee>,
   ) {}
 
-  create(data: CreateCandidateDto, photo: string) {
-    const candidate = new this.CandidateRepo({
-      ...data,
-      photo,
-    });
+  async create(data: CreateCandidateDto) {
+    const candidate = await this.CandidateRepo.create(data);
 
-    return candidate.save();
+    return candidate;
   }
 
   async getAll(filter: FilterQuery<Candidate>) {

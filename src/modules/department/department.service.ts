@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateDepartmentDto } from './dto/department.dto';
@@ -10,8 +14,10 @@ export class DepartmentService {
     @InjectModel(Department.name) private departmentRepo: Model<Department>,
   ) {}
 
-  create(dto: CreateDepartmentDto) {
-    return this.departmentRepo.create(dto);
+  async create(dto: CreateDepartmentDto) {
+    if ((await this.departmentRepo.find({ name: dto.name })).length === 0)
+      return await this.departmentRepo.create(dto);
+    throw new BadRequestException('already exist');
   }
 
   findAll() {
@@ -31,8 +37,10 @@ export class DepartmentService {
   }
 
   async remove(id: string) {
-    const deleted = await this.departmentRepo.findByIdAndDelete(id);
-    if (!deleted) throw new NotFoundException('Department not found');
-    return deleted;
+    const existed = await this.departmentRepo.findById(id);
+    if (!existed) {
+      throw new NotFoundException('department not found');
+    }
+    return await this.departmentRepo.findByIdAndDelete(id);
   }
 }

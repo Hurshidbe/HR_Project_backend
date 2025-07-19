@@ -11,12 +11,14 @@ import {
 import { PositionService } from './position.service';
 import { CreatePositionDto } from './dto/position.dto';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
+import { ApiBody, ApiParam } from '@nestjs/swagger';
 
-@Controller('position')
+@Controller('api/v1/position')
 export class PositionController {
   constructor(private readonly positionService: PositionService) {}
 
   @Post()
+  @ApiBody({ type: CreatePositionDto })
   async create(@Body() data: CreatePositionDto) {
     let response: CustomBackendResponse;
     try {
@@ -41,6 +43,7 @@ export class PositionController {
   }
 
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '687ba07b2656fc0f17b3303d' })
   async findOne(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {
@@ -53,6 +56,9 @@ export class PositionController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: CreatePositionDto })
+  @ApiParam({ name: 'id', required: true, example: '687ba07b2656fc0f17b3303d' })
+  @ApiBody({ type: CreatePositionDto })
   async update(@Param('id') id: string, data: CreatePositionDto) {
     let response: CustomBackendResponse;
     try {
@@ -65,6 +71,7 @@ export class PositionController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '687ba07b2656fc0f17b3303d' })
   async deleteOne(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {

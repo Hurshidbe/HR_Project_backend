@@ -58,25 +58,17 @@ export class UsersService {
   }
 
   async update(id: string, data: LoginDto) {
+    if (data.username === 'admin')
+      throw new BadRequestException('try another username');
     const isMatch = await this.AdminRepo.findById(id);
     if (!isMatch) throw new NotFoundException('user not found');
     Object.assign(isMatch, data);
     return await isMatch.save();
   }
 
-  remove(id: string) {
-    return this.AdminRepo.deleteOne({ _id: id });
+  async remove(id: string) {
+    const isMatch = await this.AdminRepo.findById(id);
+    if (!isMatch) throw new NotFoundException('user not found');
+    return this.AdminRepo.findOneAndDelete({ _id: id });
   }
-
-  // async updateOne(id: string, action: Statuses) {
-  //   const updated = await this.CandidateRepo.updateOne(
-  //     { _id: id },
-  //     { status: action },
-  //   );
-  //   return { status: 'success', updated };
-  // }
-
-  // async getAll(filter?: any) {
-  //   return this.CandidateRepo.find(filter);
-  // }
 }

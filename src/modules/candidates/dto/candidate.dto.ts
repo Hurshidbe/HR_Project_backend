@@ -27,6 +27,7 @@ import {
   JobRequirements,
   PersonalInfo,
 } from 'src/types/object.types';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class LangGradeDto {
   @IsString()
@@ -45,6 +46,9 @@ export class CreateCandidateDto {
     }
   })
   @IsArray()
+  @ApiProperty({
+    example: `[{ "fullName": "Ali Karimov", "sex": "male", "birthDate": "2000-01-01", "phoneNumber": "+998901234567", "email": "ali@gmail.com", "tgUsername": "@alikarim", "region": "TASHKENT", "address": "Olmazor", "occupation": "Frontend" }]`,
+  })
   personalInfo: PersonalInfo[];
 
   @Transform(({ value }) => {
@@ -56,6 +60,9 @@ export class CreateCandidateDto {
   })
   @ValidateNested({ each: true })
   @IsArray()
+  @ApiProperty({
+    example: `[{ "position": "Backend Developer", "salary": "1000" }]`,
+  })
   jobRequirements: JobRequirements[];
 
   @Transform(({ value }) => {
@@ -66,6 +73,9 @@ export class CreateCandidateDto {
     }
   })
   @IsArray()
+  @ApiProperty({
+    example: `[{ "language": "English", "grade": "B2" },{ "language": "Russian", "grade": "A1" }]`,
+  })
   @ValidateNested({ each: true })
   @Type(() => LangGradeDto)
   langGrades: LangGradeDto[];
@@ -78,6 +88,9 @@ export class CreateCandidateDto {
     }
   })
   @IsArray()
+  @ApiProperty({
+    example: `[{ "position": "Engineer", "company": "ABC Corp", "salary": "1000", "from": "2020-01-01", "to": "2022-01-01" }]`,
+  })
   @ValidateNested({ each: true })
   @Type(() => Experience)
   experience: Experience[];
@@ -91,6 +104,9 @@ export class CreateCandidateDto {
   })
   @IsArray()
   @ValidateNested({ each: true })
+  @ApiProperty({
+    example: `[{ "name": "Najot Ta'lim", "profession": "Backend", "from": "2023-01-01", "to": "2023-12-01" }]`,
+  })
   @Type(() => Course)
   course: Course[];
 
@@ -102,6 +118,10 @@ export class CreateCandidateDto {
     }
   })
   @IsArray()
+  @ApiProperty({
+    example:
+      '[{ "name": "TATU", "speciality": "CS", "from": "2016-09-01", "to": "2020-06-01" }]',
+  })
   @ValidateNested({ each: true })
   @Type(() => Education)
   education: Education[];
@@ -114,6 +134,7 @@ export class CreateCandidateDto {
     }
   })
   @IsArray()
+  @ApiProperty({ example: '' })
   @IsString({ each: true })
   hardSkills: string[];
 
@@ -125,17 +146,21 @@ export class CreateCandidateDto {
     }
   })
   @IsArray()
+  @ApiProperty({ example: '' })
   @IsString({ each: true })
   softSkills: string[];
 
   @IsEnum(DrivingGrade)
+  @ApiProperty({ example: 'No' })
   drivingLicence: DrivingGrade;
 
   @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean()
+  @ApiProperty({ example: 'false' })
   criminalRecord: boolean;
 
   @IsString()
+  @ApiProperty({ example: 'salomaaat' })
   extraInfo: string;
 
   @IsOptional()
@@ -147,8 +172,13 @@ export class CreateCandidateDto {
 }
 
 export class AcceptEmployeeDto {
+  @ApiProperty({ example: '687b90e693dd4148b2a601e2' })
   department: Department;
+  @ApiProperty({ example: 10000000 })
   salary: number;
+
+  @ApiProperty({ example: '687b90e693dd4148b2a601e2' })
   position: Position;
+  @ApiProperty({ example: EmployeeStatusEnum.probation })
   EmployeeStatus: EmployeeStatusEnum;
 }
