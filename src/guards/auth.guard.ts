@@ -14,14 +14,17 @@ export class AuthGuard implements CanActivate {
   constructor(private jwt: JwtService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
-    const token = req.cookies.authToken;
-    if (!token) throw new BadRequestException("token yo'q");
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new BadRequestException("Authorization header yo'q yoki noto'g'ri");
+    }
+    const token = authHeader.split(' ')[1];
     try {
       const decoded = await this.jwt.verifyAsync(token);
       req.user = decoded;
       return true;
     } catch (error) {
-      throw new HttpException('token expired', 402);
+      throw new HttpException('token expired or invalid', 401);
     }
   }
 }

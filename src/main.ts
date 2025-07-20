@@ -18,5 +18,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.listen(process.env.PORT ?? 3000);
+  console.warn(`APIs documentataion : http://localhost:5000/apis`);
 }
 bootstrap();
