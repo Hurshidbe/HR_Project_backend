@@ -11,9 +11,10 @@ import {
 import { PositionService } from './position.service';
 import { CreatePositionDto } from './dto/position.dto';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 
 @Controller('api/v1/position')
+@ApiBearerAuth('access-token')
 export class PositionController {
   constructor(private readonly positionService: PositionService) {}
 

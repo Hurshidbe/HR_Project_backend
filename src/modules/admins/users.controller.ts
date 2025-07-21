@@ -19,14 +19,19 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from '../candidates/entities/candidate.schema';
 import { UsersService } from './users.service';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('api/v1/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('login')
-  @ApiOperation({})
   @ApiBody({ type: LoginDto })
   async login(@Body() data: LoginDto, @Res() res: Response) {
     let response: CustomBackendResponse;
@@ -43,6 +48,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @Get()
+  @ApiBearerAuth('access-token')
   async findAll() {
     let response: CustomBackendResponse;
     try {
@@ -54,6 +60,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard, RoleGuard)
+  @ApiBearerAuth('access-token')
   @Get(':id')
   @ApiParam({
     name: 'id',
@@ -72,6 +79,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard, RoleGuard)
+  @ApiBearerAuth('access-token')
   @Post()
   @ApiBody({ type: createAdminDto })
   async add(@Body() data: createAdminDto) {
@@ -86,6 +94,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth('access-token')
   @Patch(':id')
   @ApiBody({ type: LoginDto })
   @ApiParam({ name: 'id', example: '687b601811389c5ff40baf20', required: true })
@@ -102,6 +111,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard, RoleGuard)
   @ApiParam({ name: 'id', required: true, example: '687b6ae4e88449af372e8a34' })
+  @ApiBearerAuth('access-token')
   @Delete(':id')
   async remove(@Param('id') id: string) {
     let response: CustomBackendResponse;

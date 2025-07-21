@@ -19,8 +19,14 @@ import { Candidate } from './entities/candidate.schema';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { EmployeeService } from '../employee/employee.service';
 import { AcceptEmployeeDto, CreateCandidateDto } from './dto/candidate.dto';
-import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+} from '@nestjs/swagger';
 
+@ApiBearerAuth('access-token')
 @Controller('api/v1/candidates')
 export class CandidatesController {
   constructor(

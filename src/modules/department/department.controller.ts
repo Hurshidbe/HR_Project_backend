@@ -12,9 +12,10 @@ import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/department.dto';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { response } from 'express';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 
 @Controller('api/v1/departments')
+@ApiBearerAuth('access-token')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 

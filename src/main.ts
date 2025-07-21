@@ -9,7 +9,16 @@ async function bootstrap() {
     .setTitle('Hr_backend')
     .setDescription('Hr_project all endpoints')
     .setVersion('1.0')
-    .addCookieAuth('authToken')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, swagger);
