@@ -14,6 +14,7 @@ import { PositionModule } from './modules/position/position.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { HistoryModule } from './modules/history/history.module';
 dotenv.config();
 
 @Module({
@@ -40,6 +41,7 @@ dotenv.config();
     DepartmentModule,
     PositionModule,
     EmployeeModule,
+    HistoryModule,
   ],
   controllers: [],
   providers: [

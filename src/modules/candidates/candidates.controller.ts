@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CandidatesService } from './candidates.service';
-import { dynamicCloudinaryStorage } from 'src/interceptors/cloudinary.config';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from './entities/candidate.schema';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';

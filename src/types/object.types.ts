@@ -6,7 +6,7 @@ export class LangGrade {
 }
 
 export class Experience {
-  osition: string;
+  position: string;
   company: string;
   salary: string;
   from: Date;
