@@ -45,11 +45,10 @@ export class CreateCandidateDto {
       return [];
     }
   })
-  @IsArray()
   @ApiProperty({
-    example: `[{ "fullName": "Ali Karimov", "sex": "male", "birthDate": "2000-01-01", "phoneNumber": "+998901234567", "email": "ali@gmail.com", "tgUsername": "@alikarim", "region": "TASHKENT", "address": "Olmazor", "occupation": "Frontend" }]`,
+    example: `{ "fullName": "Ali Karimov", "sex": "male", "birthDate": "2000-01-01", "phoneNumber": "+998901234567", "email": "ali@gmail.com", "tgUsername": "@alikarim", "region": "TASHKENT", "address": "Olmazor", "occupation": "Frontend" }`,
   })
-  personalInfo: PersonalInfo[];
+  personalInfo: PersonalInfo;
 
   @Transform(({ value }) => {
     try {
@@ -171,7 +170,7 @@ export class CreateCandidateDto {
   // certificates: string[];
 }
 
-export class AcceptEmployeeDto {
+export class AcceptCandidateDto {
   @ApiProperty({ example: '687b90e693dd4148b2a601e2' })
   department: Department;
   @ApiProperty({ example: 10000000 })

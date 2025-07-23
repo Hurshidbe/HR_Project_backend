@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { createAdminDto, LoginDto } from './dto/admin.dto';
-import { Response } from 'express';
+import { response, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { RoleGuard } from 'src/guards/role.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -33,13 +33,11 @@ export class UsersController {
 
   @Post('login')
   @ApiBody({ type: LoginDto })
-  async login(@Body() data: LoginDto, @Res() res: Response) {
+  async login(@Body() data: LoginDto) {
     let response: CustomBackendResponse;
     try {
       const { status, token } = await this.usersService.login(data);
-      res.cookie('authToken', token, { httpOnly: true });
       response = new CustomBackendResponse(true, { status, token });
-      return res.status(200).json(response);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }

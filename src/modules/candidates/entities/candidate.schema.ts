@@ -14,7 +14,7 @@ import {
 @Schema({ timestamps: true })
 export class Candidate extends Document {
   @Prop({ type: PersonalInfo, default: [] })
-  personalInfo: PersonalInfo[];
+  personalInfo: PersonalInfo;
 
   @Prop({ type: JobRequirements })
   jobRequirements: JobRequirements[];
@@ -51,6 +51,9 @@ export class Candidate extends Document {
 
   @Prop({ default: Statuses.process })
   status: Statuses;
+
+  @Prop({ type: Number, default: null })
+  telegramId: number;
 }
 
 export const CandidateSchema = SchemaFactory.createForClass(Candidate);

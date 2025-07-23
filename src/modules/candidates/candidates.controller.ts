@@ -17,13 +17,14 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from './entities/candidate.schema';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { EmployeeService } from '../employee/employee.service';
-import { AcceptEmployeeDto, CreateCandidateDto } from './dto/candidate.dto';
+import { AcceptCandidateDto, CreateCandidateDto } from './dto/candidate.dto';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
 } from '@nestjs/swagger';
+import { MessageService } from '../bot/message.service';
 
 @ApiBearerAuth('access-token')
 @Controller('api/v1/candidates')
@@ -31,6 +32,7 @@ export class CandidatesController {
   constructor(
     private readonly candidatesService: CandidatesService,
     private readonly EmployeeService: EmployeeService,
+    private readonly messageService: MessageService,
   ) {}
 
   @Post()
@@ -39,6 +41,7 @@ export class CandidatesController {
     let response: CustomBackendResponse;
     try {
       const savedData = await this.candidatesService.create(data);
+      await this.messageService.candidateMessage(data);
       response = new CustomBackendResponse(true, savedData);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
@@ -78,10 +81,10 @@ export class CandidatesController {
   @UseGuards(AuthGuard)
   @Patch(':id/accept')
   @ApiParam({ name: 'id', required: true, example: '687796739908dcb863a24ebf' })
-  @ApiBody({ type: AcceptEmployeeDto })
+  @ApiBody({ type: AcceptCandidateDto })
   async acceptCandidate(
     @Param('id') id: string,
-    @Body() dto: AcceptEmployeeDto,
+    @Body() dto: AcceptCandidateDto,
   ) {
     let response: CustomBackendResponse;
     try {

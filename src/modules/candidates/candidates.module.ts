@@ -7,6 +7,8 @@ import { EmployeeService } from '../employee/employee.service';
 import { Employee, EmployeeSchema } from '../employee/entities/employee.schema';
 import { HistoryModule } from '../history/history.module';
 import { HistoryService } from '../history/history.service';
+import { MessageService } from '../bot/message.service';
+import { BotService } from '../bot/bot.service';
 
 @Module({
   controllers: [CandidatesController],
@@ -18,6 +20,12 @@ import { HistoryService } from '../history/history.service';
     ]),
   ],
   exports: [CandidatesService, EmployeeService, HistoryService],
-  providers: [CandidatesService, EmployeeService, HistoryService],
+  providers: [
+    CandidatesService,
+    EmployeeService,
+    HistoryService,
+    MessageService,
+    BotService,
+  ],
 })
 export class CandidatesModule {}

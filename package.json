@@ -41,10 +41,12 @@
     "multer": "^2.0.1",
     "multer-storage-cloudinary": "^4.0.0",
     "nestjs-cloudinary": "^2.1.1",
+    "nestjs-telegraf": "^2.9.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "swagger": "^0.7.5",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "telegraf": "^4.16.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
