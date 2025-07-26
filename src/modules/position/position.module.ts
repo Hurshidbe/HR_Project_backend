@@ -11,6 +11,7 @@ import { Position, PositionSchema } from './entities/position.entity';
     ]),
   ],
   controllers: [PositionController],
+  exports: [MongooseModule],
   providers: [PositionService],
 })
 export class PositionModule {}

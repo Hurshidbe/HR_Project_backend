@@ -16,10 +16,3 @@ export class Position {
 }
 
 export const PositionSchema = SchemaFactory.createForClass(Position);
-// import { Department } from "src/modules/department/entities/department.entity"
-
-// export class Position {}
-
-// name
-// @Prop({type, ref: 'Department'})
-// department: Department

@@ -9,18 +9,18 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { DrivingGrade, Region, Sex } from 'src/enums/enums';
-import { LangGradeDto } from 'src/modules/candidates/dto/candidate.dto';
+import { LangGradeDto } from 'src/modules/candidates/dto/candidate.dtos';
 import {
   Course,
   Education,
   Experience,
-  JobRequirements,
+  JobRequirement,
   PersonalInfo,
 } from 'src/types/object.types';
 
 export class CreateEmployeeDto {
   @IsArray()
-  personalInfo: PersonalInfo[];
+  personalInfo: PersonalInfo;
 
   @Transform(({ value }) => {
     try {
@@ -29,9 +29,8 @@ export class CreateEmployeeDto {
       return [];
     }
   })
-  @IsArray()
   @ValidateNested({ each: true })
-  jobRequirements: JobRequirements[];
+  jobRequirements: JobRequirement;
 
   @Transform(({ value }) => {
     try {

@@ -44,6 +44,7 @@ export enum Statuses {
   process = 'process',
   accepted = 'accepted',
   rejected = 'rejected',
+  reviewing = 'reviewing',
 }
 
 export enum UserRole {

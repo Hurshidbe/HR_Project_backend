@@ -11,17 +11,21 @@ import { PositionSchema } from '../position/entities/position.entity';
 import { HistoryService } from '../history/history.service';
 import { HistoryModule } from '../history/history.module';
 import { PositionHistory } from '../history/entities/positionHistory.schema';
+import { PositionService } from '../position/position.service';
+import { PositionModule } from '../position/position.module';
 
 @Module({
   imports: [
     HistoryModule,
+    PositionModule,
     MongooseModule.forFeature([
       { name: Employee.name, schema: EmployeeSchema },
       { name: PositionHistory.name, schema: PositionSchema },
       { name: SalaryHistory.name, schema: SalaryHistorySchema },
+      { name: Employee.name, schema: EmployeeSchema },
     ]),
   ],
   controllers: [EmployeeController],
-  providers: [EmployeeService, HistoryService],
+  providers: [EmployeeService, HistoryService, PositionService],
 })
 export class EmployeeModule {}

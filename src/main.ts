@@ -3,8 +3,17 @@ import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe, ArgumentsHost } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { METHODS } from 'http';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
+
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
+  });
+
   const swagger = new DocumentBuilder()
     .setTitle('Hr_backend')
     .setDescription('Hr_project all endpoints')

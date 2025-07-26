@@ -17,7 +17,6 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from './entities/candidate.schema';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { EmployeeService } from '../employee/employee.service';
-import { AcceptCandidateDto, CreateCandidateDto } from './dto/candidate.dto';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -25,14 +24,19 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { MessageService } from '../bot/message.service';
+import { BotService } from '../bot/bot.service';
+import { RoleGuard } from 'src/guards/role.guard';
+import { Employee } from '../employee/entities/employee.schema';
+import { AcceptCandidateDto } from './dto/candidate.dtos';
+import { CreateCandidateDto } from './dto/main.candidate.dto';
 
 @ApiBearerAuth('access-token')
 @Controller('api/v1/candidates')
 export class CandidatesController {
   constructor(
     private readonly candidatesService: CandidatesService,
-    private readonly EmployeeService: EmployeeService,
     private readonly messageService: MessageService,
+    private readonly botService: BotService,
   ) {}
 
   @Post()
@@ -41,7 +45,7 @@ export class CandidatesController {
     let response: CustomBackendResponse;
     try {
       const savedData = await this.candidatesService.create(data);
-      await this.messageService.candidateMessage(data);
+      await this.messageService.newCandidateMessageForUser(data);
       response = new CustomBackendResponse(true, savedData);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
@@ -71,6 +75,10 @@ export class CandidatesController {
     let response: CustomBackendResponse;
     try {
       const rejected = await this.candidatesService.rejectCandidate(id);
+      const candidate = await this.candidatesService.findOne(id);
+      await this.messageService.rejectedMessageForCandidate(
+        candidate as Candidate,
+      );
       response = new CustomBackendResponse(true, rejected);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
@@ -95,10 +103,26 @@ export class CandidatesController {
         dto.salary,
         dto.EmployeeStatus,
       );
+      const candidate = await this.candidatesService.findOne(id);
+      await this.messageService.acceptedMessageForCandidate(
+        candidate as Candidate,
+      );
       response = new CustomBackendResponse(true, { accepted });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }
     return response;
+  }
+
+  @UseGuards(AuthGuard, RoleGuard)
+  @Get(':id')
+  async oneCandidate(@Param('id') id: string) {
+    let response: CustomBackendResponse;
+    try {
+      const updated = await this.botService.updateStatusToReviewing(id);
+      response = new CustomBackendResponse(true, { updated });
+    } catch (error) {
+      response = new CustomBackendResponse(false, [error.message]);
+    }
   }
 }

@@ -14,6 +14,8 @@ import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { BackupOptions } from 'node:sqlite';
 import { PositionHistory } from '../history/entities/positionHistory.schema';
 import { Position } from '../position/entities/position.entity';
+import mongoose from 'mongoose';
+import { PositionService } from '../position/position.service';
 @ApiParam({
   name: 'id',
   required: true,
@@ -24,6 +26,7 @@ export class EmployeeController {
   constructor(
     private readonly employeeService: EmployeeService,
     private readonly historyService: HistoryService,
+    private readonly positionService: PositionService,
   ) {}
 
   @Patch(':id/salary')
@@ -94,7 +97,13 @@ export class EmployeeController {
     let response: CustomBackendResponse;
     try {
       const employee = await this.employeeService.findOne(id);
-      const oldPosition = employee.position;
+      const oldPositionResult = await this.positionService.getPositionById(
+        employee.position,
+      );
+      if (!oldPositionResult) {
+        throw new Error('Old position not found');
+      }
+      const oldPosition: Position = oldPositionResult;
       const updated = await this.employeeService.updateEmployeePosition(
         id,
         body.newPosition,

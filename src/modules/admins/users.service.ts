@@ -27,16 +27,15 @@ export class UsersService {
   }
 
   async login(data: LoginDto) {
-    const isMatch = await this.AdminRepo.findOne({
-      username: data.username,
-      password: data.password,
-    });
-    if (!isMatch)
-      throw new BadRequestException('incorrect username or password');
+    const user = await this.AdminRepo.findOne({ username: data.username });
+    if (!user) throw new BadRequestException('username or password incorrect');
+    if (user.password !== data.password)
+      throw new BadRequestException('username or password incorrect');
+    console.log(user);
     const token = await this.jwt.signAsync({
-      username: isMatch.username,
-      role: isMatch.role,
-      id: isMatch.id,
+      username: user.username,
+      role: user.role,
+      id: user.id,
     });
     return { status: 'success', token };
   }

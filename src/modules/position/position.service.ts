@@ -1,7 +1,7 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Position } from './entities/position.entity';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreatePositionDto } from './dto/position.dto';
 
 @Injectable()
@@ -36,5 +36,9 @@ export class PositionService {
     const isExist = await this.PositionRepo.findById(id);
     if (!isExist) throw new NotFoundException('Position not found');
     return await isExist.deleteOne();
+  }
+
+  async getPositionById(id: mongoose.Types.ObjectId) {
+    return this.PositionRepo.findById(id);
   }
 }

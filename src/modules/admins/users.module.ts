@@ -8,11 +8,14 @@ import {
 import { CandidatesModule } from '../candidates/candidates.module';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { MessageService } from '../bot/message.service';
+import { BotService } from '../bot/bot.service';
+import { BotModule } from '../bot/bot.module';
 
 @Module({
   controllers: [UsersController],
   imports: [
-    CandidatesModule,
+    BotModule,
     MongooseModule.forFeature([
       { name: Admin.name, schema: AdminSchema },
       { name: Candidate.name, schema: CandidateSchema },
@@ -21,4 +24,4 @@ import { UsersService } from './users.service';
   providers: [UsersService],
   exports: [UsersService, MongooseModule],
 })
-export class AdminsModule {}
+export class UserModule {}

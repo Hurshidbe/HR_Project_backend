@@ -3,7 +3,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateCandidateDto } from './dto/candidate.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Candidate } from './entities/candidate.schema';
 import { Model, FilterQuery } from 'mongoose';
@@ -12,6 +11,7 @@ import { EmployeeStatusEnum, Statuses } from 'src/enums/enums';
 import { Employee } from '../employee/entities/employee.schema';
 import { Department } from '../department/entities/department.entity';
 import { Position } from '../position/entities/position.entity';
+import { CreateCandidateDto } from './dto/main.candidate.dto';
 
 @Injectable()
 export class CandidatesService {
@@ -68,7 +68,10 @@ export class CandidatesService {
       salary,
       EmployeeStatus,
     });
-    console.log(isExist);
     return accepted;
+  }
+
+  async findOne(id: string) {
+    return this.CandidateRepo.findById(id);
   }
 }

@@ -1,53 +1,54 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { DrivingGrade, Region, Sex, Statuses } from 'src/enums/enums';
+import { DrivingGrade, Statuses } from 'src/enums/enums';
 import { Document } from 'mongoose';
 import {
   Course,
+  CourseSchema,
   Education,
+  EducationSchema,
   Experience,
-  JobRequirements,
+  ExperienceSchema,
+  JobRequirement,
+  JobRequirementsSchema,
   LangGrade,
   PersonalInfo,
+  PersonalInfoSchema,
 } from 'src/types/object.types';
 
-//Candidate schema
 @Schema({ timestamps: true })
 export class Candidate extends Document {
-  @Prop({ type: PersonalInfo, default: [] })
+  @Prop({ type: PersonalInfoSchema, default: {} })
   personalInfo: PersonalInfo;
 
-  @Prop({ type: JobRequirements })
-  jobRequirements: JobRequirements[];
+  @Prop({ type: JobRequirementsSchema, default: {} })
+  jobRequirements: JobRequirement;
 
-  @Prop({ type: [Experience], default: [] })
+  @Prop({ type: [ExperienceSchema], default: [] })
   experience: Experience[];
 
-  @Prop({ type: [Education], default: [] })
+  @Prop({ type: [EducationSchema], default: [] })
   education: Education[];
 
-  @Prop({ type: [Course], default: [] })
+  @Prop({ type: [CourseSchema], default: [] })
   course: Course[];
 
-  @Prop({ type: [LangGrade], default: [] })
+  @Prop({ type: [{ language: String, grade: String }], default: [] })
   langGrades: LangGrade[];
 
-  @Prop()
+  @Prop({ type: [String], default: [] })
   hardSkills: string[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
 
-  @Prop({ type: String, default: DrivingGrade.No })
+  @Prop({ type: [String], enum: DrivingGrade, default: [] })
   drivingLicence: DrivingGrade[];
 
   @Prop({ default: false })
   criminalRecords: boolean;
 
-  @Prop()
+  @Prop({ default: '' })
   extraInfo: string;
-
-  // @Prop({ type: [String], default: [], required: false })
-  // certificates: string[];
 
   @Prop({ default: Statuses.process })
   status: Statuses;

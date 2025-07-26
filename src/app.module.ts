@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AdminsModule } from './modules/admins/users.module';
 import { CandidatesModule } from './modules/candidates/candidates.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,13 +15,15 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { HistoryModule } from './modules/history/history.module';
 import { BotModule } from './modules/bot/bot.module';
+import { UserModule } from './modules/admins/users.module';
+import { BotUpdate } from './modules/bot/bot';
 dotenv.config();
 
 @Module({
   imports: [
-    // ThrottlerModule.forRoot({
-    //   throttlers: [{ ttl: 20000, limit: 5 }],
-    // }),
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 20000, limit: 5 }],
+    }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MongooseModule.forRoot(process.env.DB_URL || ''),
     JwtModule.registerAsync({
@@ -37,18 +38,19 @@ dotenv.config();
       },
     }),
     SeedModule,
-    AdminsModule,
+    BotModule,
+    UserModule,
     CandidatesModule,
     DepartmentModule,
     PositionModule,
     EmployeeModule,
     HistoryModule,
-    BotModule,
   ],
   controllers: [],
   providers: [
     AuthGuard,
     RoleGuard,
+    BotUpdate,
     // {
     //   provide: APP_GUARD,
     //   useClass: ThrottlerGuard,
