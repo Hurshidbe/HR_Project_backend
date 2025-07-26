@@ -46,7 +46,7 @@ export class CandidatesService {
     department: Department,
     position: Position,
     salary: number,
-    EmployeeStatus: EmployeeStatusEnum,
+    employeeStatus: EmployeeStatusEnum,
   ) {
     const isExist = await this.CandidateRepo.findOne({ _id: id });
     if (!isExist) throw new NotFoundException('candidate not found by this id');
@@ -66,7 +66,7 @@ export class CandidatesService {
       department,
       position,
       salary,
-      EmployeeStatus,
+      employeeStatus: employeeStatus,
     });
     return accepted;
   }

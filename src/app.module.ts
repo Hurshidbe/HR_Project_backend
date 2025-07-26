@@ -17,6 +17,7 @@ import { HistoryModule } from './modules/history/history.module';
 import { BotModule } from './modules/bot/bot.module';
 import { UserModule } from './modules/admins/users.module';
 import { BotUpdate } from './modules/bot/bot';
+import { MessageService } from './modules/bot/message.service';
 dotenv.config();
 
 @Module({
@@ -51,6 +52,7 @@ dotenv.config();
     AuthGuard,
     RoleGuard,
     BotUpdate,
+    MessageService,
     // {
     //   provide: APP_GUARD,
     //   useClass: ThrottlerGuard,

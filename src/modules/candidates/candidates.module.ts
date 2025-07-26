@@ -10,12 +10,14 @@ import { HistoryService } from '../history/history.service';
 import { MessageService } from '../bot/message.service';
 import { BotService } from '../bot/bot.service';
 import { UserModule } from '../admins/users.module';
+import { BotModule } from '../bot/bot.module';
 
 @Module({
   controllers: [CandidatesController],
   imports: [
     HistoryModule,
     UserModule,
+    BotModule,
     MongooseModule.forFeature([
       { name: Candidate.name, schema: CandidateSchema },
       { name: Employee.name, schema: EmployeeSchema },

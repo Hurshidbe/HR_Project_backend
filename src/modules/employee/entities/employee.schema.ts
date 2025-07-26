@@ -22,8 +22,8 @@ import {
 
 @Schema({ timestamps: true })
 export class Employee extends Document {
-  @Prop({ type: PersonalInfoSchema, required: true })
-  personalInfo: PersonalInfo;
+  @Prop({ type: [PersonalInfoSchema], required: true })
+  personalInfo: PersonalInfo[];
 
   @Prop({ type: [JobRequirementsSchema], default: [] })
   jobRequirements: JobRequirement[];
@@ -52,8 +52,8 @@ export class Employee extends Document {
   @Prop({ default: false })
   criminalRecord: boolean;
 
-  @Prop()
-  extraInfo: string;
+  @Prop({ type: [String] })
+  extraInfo: string[];
   @Prop({ type: Number, default: null })
   telegramId: number;
 

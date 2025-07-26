@@ -37,13 +37,13 @@ export class BotService {
     try {
       await this.candidateRepo.findOneAndUpdate(
         {
-          'personalInfo.tgUsername': tgUsername,
+          'personalInfo.0.tgUsername': tgUsername,
         },
         { telegramId },
       );
       await this.employeeRepo.findOneAndUpdate(
         {
-          'personalInfo.tgUsername': tgUsername,
+          'personalInfo.0.tgUsername': tgUsername,
         },
         { telegramId },
       );

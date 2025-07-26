@@ -16,7 +16,7 @@ export class MessageService {
 
   async newCandidateMessageForUser(data: CreateCandidateDto) {
     const ADMIN_TG_ID = process.env.ADMIN_TG_ID || 'yoq';
-    const personalInfo = data.personalInfo;
+    const personalInfo = data.personalInfo[0];
     const message = `
 🆕 <b>New Candidate!</b>
 
@@ -31,14 +31,14 @@ export class MessageService {
 💼 <b>Occupation:</b> ${personalInfo?.occupation}
 🚗 <b>Driving License:</b> ${data.drivingLicence}
 🚔 <b>Criminal Record:</b> ${data.criminalRecords ? 'Yes' : 'No'}
-📝 <b>Additional Info:</b> ${data.extraInfo || 'None'}
+📝 <b>Additional Info:</b> ${data.extraInfo || ['None']}
 🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
     await this.botService.sendNotify(message, ADMIN_TG_ID);
   }
 
   async reviewingMessageForCandidate(updated: Candidate) {
-    const personalInfo = updated.personalInfo;
+    const personalInfo = updated.personalInfo[0];
     const candidateTgId = updated.telegramId;
     const message = `
 🔍 <b>Arizangiz ko'rib chiqilmoqda</b>
@@ -58,7 +58,7 @@ Rahmat!
   }
 
   async acceptedMessageForCandidate(candidate: Candidate) {
-    const personalInfo = candidate.personalInfo;
+    const personalInfo = candidate.personalInfo[0];
     const candidateTgId = candidate.telegramId;
     const message = `
 ✅ <b>Arizangiz qabul qilindi</b>
@@ -77,7 +77,7 @@ Rahmat va muvaffaqiyat tilaymiz!
   }
 
   async rejectedMessageForCandidate(candidate: Candidate) {
-    const personalInfo = candidate.personalInfo;
+    const personalInfo = candidate.personalInfo[0];
     const candidateTgId = candidate.telegramId;
     const message = `
 ❌ <b>Arizangiz rad etildi</b>

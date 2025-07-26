@@ -76,9 +76,10 @@ export class CandidatesController {
     try {
       const rejected = await this.candidatesService.rejectCandidate(id);
       const candidate = await this.candidatesService.findOne(id);
-      await this.messageService.rejectedMessageForCandidate(
-        candidate as Candidate,
-      );
+      if (candidate?.telegramId)
+        await this.messageService.rejectedMessageForCandidate(
+          candidate as Candidate,
+        );
       response = new CustomBackendResponse(true, rejected);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
@@ -101,12 +102,13 @@ export class CandidatesController {
         dto.department,
         dto.position,
         dto.salary,
-        dto.EmployeeStatus,
+        dto.employeeStatus,
       );
       const candidate = await this.candidatesService.findOne(id);
-      await this.messageService.acceptedMessageForCandidate(
-        candidate as Candidate,
-      );
+      if (candidate?.telegramId)
+        await this.messageService.acceptedMessageForCandidate(
+          candidate as Candidate,
+        );
       response = new CustomBackendResponse(true, { accepted });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);

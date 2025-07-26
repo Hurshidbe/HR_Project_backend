@@ -121,5 +121,5 @@ export class AcceptCandidateDto {
   @ApiProperty({ example: '687b90e693dd4148b2a601e2' })
   position: Position;
   @ApiProperty({ example: EmployeeStatusEnum.probation })
-  EmployeeStatus: EmployeeStatusEnum;
+  employeeStatus: EmployeeStatusEnum;
 }
