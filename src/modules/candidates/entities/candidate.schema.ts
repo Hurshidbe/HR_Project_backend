@@ -8,6 +8,10 @@ import {
   EducationSchema,
   Experience,
   ExperienceSchema,
+  extraInfo,
+  extraInfoSchema,
+  hardSkill,
+  hardSkillSchema,
   JobRequirement,
   JobRequirementsSchema,
   LangGrade,
@@ -20,8 +24,8 @@ export class Candidate extends Document {
   @Prop({ type: [PersonalInfoSchema], default: [] })
   personalInfo: PersonalInfo[];
 
-  @Prop({ type: JobRequirementsSchema, default: {} })
-  jobRequirements: JobRequirement;
+  @Prop({ type: [JobRequirementsSchema], default: {} })
+  jobRequirements: JobRequirement[];
 
   @Prop({ type: [ExperienceSchema], default: [] })
   experience: Experience[];
@@ -35,8 +39,8 @@ export class Candidate extends Document {
   @Prop({ type: [{ language: String, grade: String }], default: [] })
   langGrades: LangGrade[];
 
-  @Prop({ type: [String], default: [] })
-  hardSkills: string[];
+  @Prop({ type: [hardSkillSchema], default: [] })
+  hardSkills: hardSkill[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
@@ -47,8 +51,8 @@ export class Candidate extends Document {
   @Prop({ default: false })
   criminalRecords: boolean;
 
-  @Prop({ default: [String] })
-  extraInfo: string[];
+  @Prop({ type: [extraInfoSchema], default: [] })
+  extraInfo: extraInfo[];
 
   @Prop({ default: Statuses.process })
   status: Statuses;

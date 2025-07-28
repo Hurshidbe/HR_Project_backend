@@ -69,7 +69,7 @@ export class PersonalInfo {
   @Prop()
   sex: Sex;
 
-  @Prop()
+  @Prop({ type: Date })
   birthDate: Date;
 
   @Prop()
@@ -105,3 +105,17 @@ export class JobRequirement {
 }
 export const JobRequirementsSchema =
   SchemaFactory.createForClass(JobRequirement);
+
+@Schema({ _id: false })
+export class hardSkill {
+  @Prop()
+  hardSkills: string;
+}
+export const hardSkillSchema = SchemaFactory.createForClass(hardSkill);
+
+@Schema({ _id: false })
+export class extraInfo {
+  @Prop()
+  more: string;
+}
+export const extraInfoSchema = SchemaFactory.createForClass(extraInfo);

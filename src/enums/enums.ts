@@ -41,7 +41,7 @@ export enum DrivingGrade {
 }
 
 export enum Statuses {
-  process = 'process',
+  process = 'pending',
   accepted = 'accepted',
   rejected = 'rejected',
   reviewing = 'reviewing',

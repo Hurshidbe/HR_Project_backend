@@ -47,6 +47,7 @@ export class CandidatesController {
       const savedData = await this.candidatesService.create(data);
       await this.messageService.newCandidateMessageForUser(data);
       response = new CustomBackendResponse(true, savedData);
+      console.log(savedData);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }

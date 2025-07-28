@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   HttpException,
+  UseGuards,
 } from '@nestjs/common';
 import { PositionService } from './position.service';
 import { CreatePositionDto } from './dto/position.dto';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
-
+import { AuthGuard } from 'src/guards/auth.guard';
+@UseGuards(AuthGuard)
 @Controller('api/v1/position')
 @ApiBearerAuth('access-token')
 export class PositionController {

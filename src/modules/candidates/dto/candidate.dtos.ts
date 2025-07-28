@@ -32,7 +32,7 @@ export class PersonalInfoDto {
 
   @Type(() => Date)
   @IsDate()
-  birthDate: Date;
+  birthDate: string;
 
   @IsString()
   phoneNumber: string;

@@ -18,6 +18,7 @@ import {
 import { Type } from 'class-transformer';
 import { DrivingGrade, Statuses } from 'src/enums/enums';
 import { ApiProperty } from '@nestjs/swagger';
+import { extraInfo, hardSkill } from 'src/types/object.types';
 
 export class CreateCandidateDto {
   @ValidateNested()
@@ -32,7 +33,7 @@ export class CreateCandidateDto {
         phoneNumber: '+998901234567',
         email: 'ali@gmail.com',
         tgUsername: 'alikarim',
-        region: 'TASHKENT',
+        region: 'Toshkent',
         address: 'Olmazor tumani',
         occupation: 'Frontend Developer',
       },
@@ -113,13 +114,11 @@ export class CreateCandidateDto {
   langGrades: LangGradeDto[];
 
   @IsArray()
-  @IsString({ each: true })
-  @ApiProperty({ example: ['NestJS', 'MongoDB'] })
-  hardSkills: string[];
+  @ApiProperty({ example: [{ hardSkill: 'eshak minish' }] })
+  hardSkills: hardSkill[];
 
   @IsArray()
-  @IsString({ each: true })
-  @ApiProperty({ example: ['Teamwork', 'Problem-solving'] })
+  @ApiProperty({ example: ['eshak minish'] })
   softSkills: string[];
 
   @IsArray()
@@ -132,8 +131,8 @@ export class CreateCandidateDto {
   criminalRecords: boolean;
 
   @IsArray()
-  @ApiProperty({ example: ["Hozircha boshqa ma'lumot yo'q"] })
-  extraInfo: [];
+  @ApiProperty({ example: [{ more: 'salomaat' }] })
+  extraInfo: extraInfo[];
   // don't recive from client
   @IsEnum(Statuses)
   @IsOptional()

@@ -62,7 +62,7 @@ export class Employee extends Document {
     ref: 'Department',
     required: true,
   })
-  department: Types.ObjectId;
+  department: Department;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

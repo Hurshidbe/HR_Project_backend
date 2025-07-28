@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { HistoryService } from '../history/history.service';
@@ -16,11 +17,13 @@ import { PositionHistory } from '../history/entities/positionHistory.schema';
 import { Position } from '../position/entities/position.entity';
 import mongoose from 'mongoose';
 import { PositionService } from '../position/position.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 @ApiParam({
   name: 'id',
   required: true,
   example: '',
 })
+@UseGuards(AuthGuard)
 @Controller('api/v1/employee')
 export class EmployeeController {
   constructor(
@@ -66,7 +69,6 @@ export class EmployeeController {
     }
     return response;
   }
-
   @Patch(':id/position')
   @ApiOperation({
     description: 'Update employee position and create position history',
