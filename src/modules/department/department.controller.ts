@@ -12,15 +12,12 @@ import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/department.dto';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { response } from 'express';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 
 @Controller('api/v1/departments')
-@ApiBearerAuth('access-token')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
   @Post()
-  @ApiBody({ type: CreateDepartmentDto })
   async create(@Body() dto: CreateDepartmentDto) {
     let response: CustomBackendResponse;
     try {
@@ -45,7 +42,6 @@ export class DepartmentController {
   }
 
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '687b94abb44adf58faf24e17' })
   async findOne(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {
@@ -58,7 +54,6 @@ export class DepartmentController {
   }
 
   @Patch(':id')
-  @ApiParam({ name: 'id', example: '687b94abb44adf58faf24e17', required: true })
   async update(@Param('id') id: string, @Body() dto: CreateDepartmentDto) {
     let response: CustomBackendResponse;
     try {
@@ -71,7 +66,6 @@ export class DepartmentController {
   }
 
   @Delete(':id')
-  @ApiParam({ required: true, name: 'id', example: '687b94abb44adf58faf24e17' })
   async remove(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {

@@ -10,7 +10,7 @@ export enum Region {
   Namangan = 'Namangan',
   Sirdaryo = 'Sirdaryo',
   Andijon = 'Andijon',
-  Fargona = "Farg'ona",
+  Fargona = 'Fargona',
   Jizzax = 'Jizzax',
   Qashqadaryo = 'Qashqadaryo',
   Navoiy = 'Navoiy',
@@ -40,8 +40,8 @@ export enum DrivingGrade {
   F = 'F',
 }
 
-export enum Statuses {
-  process = 'pending',
+export enum CandidateStatuses {
+  pending = 'pending',
   accepted = 'accepted',
   rejected = 'rejected',
   reviewing = 'reviewing',

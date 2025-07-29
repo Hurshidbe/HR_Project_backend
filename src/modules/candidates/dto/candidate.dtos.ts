@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { EmployeeStatusEnum, Region, Sex } from 'src/enums/enums';
 import { Department } from 'src/modules/department/entities/department.entity';
 import { Position } from 'src/modules/position/entities/position.entity';
@@ -14,43 +13,12 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Statuses, DrivingGrade } from 'src/enums/enums';
 export class JobRequirementDto {
   @IsString()
   position: string;
 
   @IsString()
   salary: string;
-}
-
-export class PersonalInfoDto {
-  @IsString()
-  fullName: string;
-
-  @IsEnum(Sex)
-  sex: Sex;
-
-  @Type(() => Date)
-  @IsDate()
-  birthDate: string;
-
-  @IsString()
-  phoneNumber: string;
-
-  @IsString()
-  email: string;
-
-  @IsString()
-  tgUsername: string;
-
-  @IsEnum(Region)
-  region: Region;
-
-  @IsString()
-  address: string;
-
-  @IsString()
-  occupation: string;
 }
 
 export class CourseDto {
@@ -113,13 +81,8 @@ export class LangGradeDto {
 }
 
 export class AcceptCandidateDto {
-  @ApiProperty({ example: '687b90e693dd4148b2a601e2' })
   department: Department;
-  @ApiProperty({ example: 10000000 })
   salary: number;
-
-  @ApiProperty({ example: '687b90e693dd4148b2a601e2' })
   position: Position;
-  @ApiProperty({ example: EmployeeStatusEnum.probation })
   employeeStatus: EmployeeStatusEnum;
 }

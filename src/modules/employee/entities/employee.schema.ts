@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
-import { DrivingGrade, EmployeeStatusEnum } from 'src/enums/enums';
+import { DrivingGrade, EmployeeStatusEnum, Region, Sex } from 'src/enums/enums';
 
 import { Department } from 'src/modules/department/entities/department.entity';
 import { Position } from 'src/modules/position/entities/position.entity';
@@ -15,18 +15,44 @@ import {
   JobRequirementsSchema,
   JobRequirement,
   LangGrade,
-  PersonalInfo,
-  PersonalInfoSchema,
   LangGradeSchema,
+  hardSkill,
+  hardSkillSchema,
 } from 'src/types/object.types';
 
 @Schema({ timestamps: true })
 export class Employee extends Document {
-  @Prop({ type: [PersonalInfoSchema], required: true })
-  personalInfo: PersonalInfo[];
+  @Prop()
+  fullName: string;
 
-  @Prop({ type: [JobRequirementsSchema], default: [] })
-  jobRequirements: JobRequirement[];
+  @Prop()
+  sex: Sex;
+
+  @Prop({ type: Date })
+  birthDate: Date;
+
+  @Prop()
+  phoneNumber: string;
+
+  @Prop()
+  email: string;
+
+  @Prop({
+    set: (value: string) => value?.toLowerCase?.() ?? value,
+  })
+  tgUsername: string;
+
+  @Prop()
+  region: Region;
+
+  @Prop()
+  address: string;
+
+  @Prop()
+  occupation: string;
+
+  @Prop({ type: { JobRequirementsSchema }, default: {} })
+  jobRequirements: JobRequirement;
 
   @Prop({ type: [ExperienceSchema], default: [] })
   experience: Experience[];
@@ -37,11 +63,11 @@ export class Employee extends Document {
   @Prop({ type: [CourseSchema], default: [] })
   course: Course[];
 
-  @Prop({ type: [LangGradeSchema], default: [] })
+  @Prop({ type: [{ language: String, grade: String }], default: [] })
   langGrades: LangGrade[];
 
-  @Prop({ type: [String], default: [] })
-  hardSkills: string[];
+  @Prop({ type: [hardSkillSchema], default: [] })
+  hardSkills: hardSkill[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
@@ -50,10 +76,11 @@ export class Employee extends Document {
   drivingLicence: DrivingGrade[];
 
   @Prop({ default: false })
-  criminalRecord: boolean;
+  criminalRecords: boolean;
 
-  @Prop({ type: [String] })
-  extraInfo: string[];
+  @Prop({ type: String, default: [] })
+  extraInfo: string;
+
   @Prop({ type: Number, default: null })
   telegramId: number;
 

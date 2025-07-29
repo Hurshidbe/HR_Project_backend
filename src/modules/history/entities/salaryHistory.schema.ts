@@ -4,7 +4,6 @@ import { Department } from 'src/modules/department/entities/department.entity';
 import { Employee } from 'src/modules/employee/entities/employee.schema';
 import { Position } from 'src/modules/position/entities/position.entity';
 
-////////////////////////////////////////////////////////////////////////////////
 @Schema()
 export class SalaryHistory {
   @Prop({
@@ -19,6 +18,5 @@ export class SalaryHistory {
   @Prop()
   newSalary: number;
 }
-////////////////////////////////////////////////////////////////////////////////
 
 export const SalaryHistorySchema = SchemaFactory.createForClass(SalaryHistory);

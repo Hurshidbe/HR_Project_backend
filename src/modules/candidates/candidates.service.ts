@@ -7,11 +7,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Candidate } from './entities/candidate.schema';
 import { Model, FilterQuery } from 'mongoose';
 import { Status } from 'cloudinary';
-import { EmployeeStatusEnum, Statuses } from 'src/enums/enums';
+
 import { Employee } from '../employee/entities/employee.schema';
 import { Department } from '../department/entities/department.entity';
 import { Position } from '../position/entities/position.entity';
 import { CreateCandidateDto } from './dto/main.candidate.dto';
+import { CandidateStatuses, EmployeeStatusEnum } from 'src/enums/enums';
 
 @Injectable()
 export class CandidatesService {
@@ -36,7 +37,7 @@ export class CandidatesService {
 
     return this.CandidateRepo.findByIdAndUpdate(
       id,
-      { status: Statuses.rejected },
+      { status: CandidateStatuses.rejected },
       { new: true },
     );
   }
@@ -51,18 +52,7 @@ export class CandidatesService {
     const isExist = await this.CandidateRepo.findOne({ _id: id });
     if (!isExist) throw new NotFoundException('candidate not found by this id');
     const accepted = await this.EmployeeRepo.create({
-      personalInfo: isExist.personalInfo,
-      jobRequirements: isExist.jobRequirements,
-      experience: isExist.experience,
-      education: isExist.education,
-      course: isExist.course,
-      langGrades: isExist.langGrades,
-      hardSkills: isExist.hardSkills,
-      softSkills: isExist.softSkills,
-      drivingLicence: isExist.drivingLicence,
-      criminalRecord: isExist.criminalRecords,
-      extraInfo: isExist.extraInfo,
-      // certificates: isExist.certificates,
+      ...isExist,
       department,
       position,
       salary,
@@ -72,6 +62,7 @@ export class CandidatesService {
   }
 
   async findOne(id: string) {
-    return this.CandidateRepo.findById(id);
+    const candidate = this.CandidateRepo.findById(id);
+    return candidate;
   }
 }

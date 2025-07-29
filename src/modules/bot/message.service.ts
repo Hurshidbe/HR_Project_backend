@@ -1,10 +1,11 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { BotService } from './bot.service';
-import { Message } from 'nestjs-telegraf';
+import { Message, Update } from 'nestjs-telegraf';
 import { createAdminDto } from '../admins/dto/admin.dto';
 import { Candidate } from '../candidates/entities/candidate.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateCandidateDto } from '../candidates/dto/main.candidate.dto';
+import { Employee } from '../employee/entities/employee.schema';
 
 @Injectable()
 export class MessageService {
@@ -16,19 +17,18 @@ export class MessageService {
 
   async newCandidateMessageForUser(data: CreateCandidateDto) {
     const ADMIN_TG_ID = process.env.ADMIN_TG_ID || 'yoq';
-    const personalInfo = data.personalInfo[0];
     const message = `
 🆕 <b>New Candidate!</b>
 
-👤 <b>Full Name:</b> ${personalInfo?.fullName}
-🚻 <b>Gender:</b> ${personalInfo?.sex}
-🎂 <b>Birth Date:</b> ${personalInfo?.birthDate}
-📞 <b>Phone:</b> ${personalInfo?.phoneNumber}
-📧 <b>Email:</b> ${personalInfo?.email}
-💬 <b>Telegram:</b> ${personalInfo?.tgUsername}
-📍 <b>Region:</b> ${personalInfo?.region}
-🏠 <b>Address:</b> ${personalInfo?.address}
-💼 <b>Occupation:</b> ${personalInfo?.occupation}
+👤 <b>Full Name:</b> ${data.fullName}
+🚻 <b>Gender:</b> ${data.sex}
+🎂 <b>Birth Date:</b> ${data.birthDate}
+📞 <b>Phone:</b> ${data.phoneNumber}
+📧 <b>Email:</b> ${data.email}
+💬 <b>Telegram:</b> ${data.tgUsername}
+📍 <b>Region:</b> ${data.region}
+🏠 <b>Address:</b> ${data.address}
+💼 <b>Occupation:</b> ${data.occupation}
 🚗 <b>Driving License:</b> ${data.drivingLicence}
 🚔 <b>Criminal Record:</b> ${data.criminalRecords ? 'Yes' : 'No'}
 📝 <b>Additional Info:</b> ${data.extraInfo || ['None']}
@@ -38,18 +38,14 @@ export class MessageService {
   }
 
   async reviewingMessageForCandidate(updated: Candidate) {
-    const personalInfo = updated.personalInfo[0];
     const candidateTgId = updated.telegramId;
     const message = `
 🔍 <b>Arizangiz ko'rib chiqilmoqda</b>
 
-Hurmatli ${personalInfo.fullName},
-
+Hurmatli ${updated?.fullName},
 Siz topshirgan ariza hozirda mutaxassislarimiz tomonidan ko'rib chiqilmoqda. 
-
 ⏱ Iltimos, biroz sabrli bo'ling — tez orada siz bilan bog'lanamiz.  
 📞 Telefoningiz va Telegramingizni doimiy faol holatda saqlang.
-
 Rahmat!
 🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
@@ -58,18 +54,14 @@ Rahmat!
   }
 
   async acceptedMessageForCandidate(candidate: Candidate) {
-    const personalInfo = candidate.personalInfo[0];
     const candidateTgId = candidate.telegramId;
     const message = `
 ✅ <b>Arizangiz qabul qilindi</b>
 
-Hurmatli ${personalInfo?.fullName},
-
+Hurmatli ${candidate?.fullName},
 Tabriklaymiz! Sizning arizangiz mutaxassislarimiz tomonidan ko'rib chiqildi va ijobiy baholandi.
-
 📞 Tez orada siz bilan bog'lanamiz va keyingi bosqichlar haqida ma'lumot beramiz. 
 📲 Telefoningiz va Telegramingizni faol holatda saqlang.
-
 Rahmat va muvaffaqiyat tilaymiz!
 🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
@@ -77,19 +69,14 @@ Rahmat va muvaffaqiyat tilaymiz!
   }
 
   async rejectedMessageForCandidate(candidate: Candidate) {
-    const personalInfo = candidate.personalInfo[0];
-    const candidateTgId = candidate.telegramId;
+    const candidateTgId = candidate?.telegramId;
     const message = `
 ❌ <b>Arizangiz rad etildi</b>
 
-Hurmatli ${personalInfo?.fullName},
-
+Hurmatli ${candidate?.fullName},
 Afsuski, arizangiz mutaxassislarimiz tomonidan ko'rib chiqildi va hozircha ijobiy baholanmadi.
-
 📝 Siz istasangiz, keyinchalik yana ariza topshirishingiz mumkin. Hujjatlaringizni va tajribangizni yana bir bor ko'rib chiqing.
-
 📲 Telefoningiz va Telegramingizni faol holatda saqlang — yangi imkoniyatlar haqida sizni xabardor qilamiz.
-
 Omad tilaymiz!
 🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
