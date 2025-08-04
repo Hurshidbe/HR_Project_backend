@@ -4,7 +4,7 @@ import { UserRole } from 'src/enums/enums';
 
 @Schema({ timestamps: true })
 export class Admin extends Document {
-  @Prop({})
+  @Prop()
   username: string;
 
   @Prop()

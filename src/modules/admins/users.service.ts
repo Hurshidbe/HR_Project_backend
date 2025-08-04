@@ -9,7 +9,6 @@ import { Model } from 'mongoose';
 import { createAdminDto, LoginDto } from './dto/admin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Candidate } from '../candidates/entities/candidate.schema';
-import { Statuses } from 'src/enums/enums';
 import { response } from 'express';
 
 @Injectable()
@@ -57,7 +56,7 @@ export class UsersService {
   }
 
   async update(id: string, data: LoginDto) {
-    if (data.username === 'admin')
+    if (data.username === process.env.SUPERADMIN)
       throw new BadRequestException('try another username');
     const isMatch = await this.AdminRepo.findById(id);
     if (!isMatch) throw new NotFoundException('user not found');

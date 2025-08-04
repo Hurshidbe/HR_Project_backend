@@ -17,12 +17,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from './entities/candidate.schema';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { EmployeeService } from '../employee/employee.service';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-} from '@nestjs/swagger';
+
 import { MessageService } from '../bot/message.service';
 import { BotService } from '../bot/bot.service';
 import { RoleGuard } from 'src/guards/role.guard';
@@ -30,7 +25,6 @@ import { Employee } from '../employee/entities/employee.schema';
 import { AcceptCandidateDto } from './dto/candidate.dtos';
 import { CreateCandidateDto } from './dto/main.candidate.dto';
 
-@ApiBearerAuth('access-token')
 @Controller('api/v1/candidates')
 export class CandidatesController {
   constructor(
@@ -40,14 +34,12 @@ export class CandidatesController {
   ) {}
 
   @Post()
-  @ApiBody({ type: CreateCandidateDto })
   async create(@Body() data: CreateCandidateDto) {
     let response: CustomBackendResponse;
     try {
       const savedData = await this.candidatesService.create(data);
       await this.messageService.newCandidateMessageForUser(data);
       response = new CustomBackendResponse(true, savedData);
-      console.log(savedData);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }
@@ -71,15 +63,14 @@ export class CandidatesController {
 
   @UseGuards(AuthGuard)
   @Patch(':id/reject')
-  @ApiParam({ name: 'id', required: true, example: '687796739908dcb863a24ebf' })
   async rejectCandidate(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {
       const rejected = await this.candidatesService.rejectCandidate(id);
-      const candidate = await this.candidatesService.findOne(id);
-      if (candidate?.telegramId)
+      const tgIdExist = rejected?.telegramId;
+      if (tgIdExist)
         await this.messageService.rejectedMessageForCandidate(
-          candidate as Candidate,
+          rejected as Candidate,
         );
       response = new CustomBackendResponse(true, rejected);
     } catch (error) {
@@ -90,8 +81,6 @@ export class CandidatesController {
 
   @UseGuards(AuthGuard)
   @Patch(':id/accept')
-  @ApiParam({ name: 'id', required: true, example: '687796739908dcb863a24ebf' })
-  @ApiBody({ type: AcceptCandidateDto })
   async acceptCandidate(
     @Param('id') id: string,
     @Body() dto: AcceptCandidateDto,
@@ -106,10 +95,8 @@ export class CandidatesController {
         dto.employeeStatus,
       );
       const candidate = await this.candidatesService.findOne(id);
-      if (candidate?.telegramId)
-        await this.messageService.acceptedMessageForCandidate(
-          candidate as Candidate,
-        );
+      if (candidate)
+        await this.messageService.acceptedMessageForCandidate(candidate);
       response = new CustomBackendResponse(true, { accepted });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
@@ -127,5 +114,6 @@ export class CandidatesController {
     } catch (error) {
       response = new CustomBackendResponse(false, [error.message]);
     }
+    return response;
   }
 }

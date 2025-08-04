@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { HistoryService } from '../history/history.service';
-import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { BackupOptions } from 'node:sqlite';
 import { PositionHistory } from '../history/entities/positionHistory.schema';
@@ -18,11 +17,7 @@ import { Position } from '../position/entities/position.entity';
 import mongoose from 'mongoose';
 import { PositionService } from '../position/position.service';
 import { AuthGuard } from 'src/guards/auth.guard';
-@ApiParam({
-  name: 'id',
-  required: true,
-  example: '',
-})
+
 @UseGuards(AuthGuard)
 @Controller('api/v1/employee')
 export class EmployeeController {
@@ -33,19 +28,6 @@ export class EmployeeController {
   ) {}
 
   @Patch(':id/salary')
-  @ApiOperation({ description: 'update candidate salary' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        newSalary: {
-          type: 'number',
-          example: 3500,
-        },
-      },
-      required: ['newSalary'],
-    },
-  })
   async updateSalary(
     @Param('id') id: string,
     @Body() body: { newSalary: number },
@@ -70,28 +52,6 @@ export class EmployeeController {
     return response;
   }
   @Patch(':id/position')
-  @ApiOperation({
-    description: 'Update employee position and create position history',
-  })
-  @ApiParam({
-    name: 'id',
-    required: true,
-    example: '64b7f54475c4f3872581d4b9',
-    description: 'Employee ID',
-  })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        newPosition: {
-          type: 'string',
-          example: '64b8cd0d8b4e3eaa5fca9013',
-          description: 'New position ID (ObjectId of Position)',
-        },
-      },
-      required: ['newPosition'],
-    },
-  })
   async updatePosition(
     @Param('id') id: string,
     @Body() body: { newPosition: Position },

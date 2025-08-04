@@ -62,40 +62,6 @@ export class Course {
 export const CourseSchema = SchemaFactory.createForClass(Course);
 
 @Schema({ _id: false })
-export class PersonalInfo {
-  @Prop()
-  fullName: string;
-
-  @Prop()
-  sex: Sex;
-
-  @Prop({ type: Date })
-  birthDate: Date;
-
-  @Prop()
-  phoneNumber: string;
-
-  @Prop()
-  email: string;
-
-  @Prop({
-    set: (value: string) => value?.toLowerCase?.() ?? value,
-  })
-  tgUsername: string;
-
-  @Prop()
-  region: Region;
-
-  @Prop()
-  address: string;
-
-  @Prop()
-  occupation: string;
-}
-
-export const PersonalInfoSchema = SchemaFactory.createForClass(PersonalInfo);
-
-@Schema({ _id: false })
 export class JobRequirement {
   @Prop()
   position: string;
@@ -112,10 +78,3 @@ export class hardSkill {
   hardSkills: string;
 }
 export const hardSkillSchema = SchemaFactory.createForClass(hardSkill);
-
-@Schema({ _id: false })
-export class extraInfo {
-  @Prop()
-  more: string;
-}
-export const extraInfoSchema = SchemaFactory.createForClass(extraInfo);

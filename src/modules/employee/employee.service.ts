@@ -19,18 +19,7 @@ export class EmployeeService {
 
   async create(employee: CreateEmployeeDto) {
     const created = await this.EmployeeRepo.create({
-      personalInfo: employee.personalInfo,
-      // certificates: employee.certificates,
-      convicted: employee.criminalRecord,
-      course: employee.course,
-      drivingLicence: employee.drivingLicence,
-      educationEnded: employee.education,
-      experienceCompany: employee.experience,
-      langGrades: employee.langGrades,
-      extraInfo: employee.extraInfo,
-      hardSkills: employee.hardSkills,
-      softSkills: employee.softSkills,
-      criminalRecord: employee.criminalRecord,
+      ...employee,
     });
     console.log(created);
   }

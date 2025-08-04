@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { DrivingGrade, Statuses } from 'src/enums/enums';
+import { CandidateStatuses, DrivingGrade, Region, Sex } from 'src/enums/enums';
 import { Document } from 'mongoose';
 import {
   Course,
@@ -8,24 +8,46 @@ import {
   EducationSchema,
   Experience,
   ExperienceSchema,
-  extraInfo,
-  extraInfoSchema,
   hardSkill,
   hardSkillSchema,
   JobRequirement,
   JobRequirementsSchema,
   LangGrade,
-  PersonalInfo,
-  PersonalInfoSchema,
 } from 'src/types/object.types';
 
 @Schema({ timestamps: true })
 export class Candidate extends Document {
-  @Prop({ type: [PersonalInfoSchema], default: [] })
-  personalInfo: PersonalInfo[];
+  @Prop()
+  fullName: string;
 
-  @Prop({ type: [JobRequirementsSchema], default: {} })
-  jobRequirements: JobRequirement[];
+  @Prop()
+  sex: Sex;
+
+  @Prop({ type: Date })
+  birthDate: Date;
+
+  @Prop()
+  phoneNumber: string;
+
+  @Prop()
+  email: string;
+
+  @Prop({
+    set: (value: string) => value?.toLowerCase?.() ?? value,
+  })
+  tgUsername: string;
+
+  @Prop()
+  region: Region;
+
+  @Prop()
+  address: string;
+
+  @Prop()
+  occupation: string;
+
+  @Prop({ type: JobRequirementsSchema, default: {} })
+  jobRequirement: JobRequirement;
 
   @Prop({ type: [ExperienceSchema], default: [] })
   experience: Experience[];
@@ -51,11 +73,11 @@ export class Candidate extends Document {
   @Prop({ default: false })
   criminalRecords: boolean;
 
-  @Prop({ type: [extraInfoSchema], default: [] })
-  extraInfo: extraInfo[];
+  @Prop({ type: String, default: [] })
+  extraInfo: string;
 
-  @Prop({ default: Statuses.process })
-  status: Statuses;
+  @Prop({ default: CandidateStatuses.pending })
+  status: CandidateStatuses;
 
   @Prop({ type: Number, default: null })
   telegramId: number;
