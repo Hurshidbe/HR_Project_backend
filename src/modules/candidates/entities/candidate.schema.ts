@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CandidateStatuses, DrivingGrade, Region, Sex } from 'src/enums/enums';
+import { CandidateStatus, DrivingLicense, Region, Sex } from 'src/enums/enums';
 import { Document } from 'mongoose';
 import {
   Course,
@@ -8,8 +8,8 @@ import {
   EducationSchema,
   Experience,
   ExperienceSchema,
-  hardSkill,
-  hardSkillSchema,
+  HardSkill,
+  HardSkillSchema,
   JobRequirement,
   JobRequirementsSchema,
   LangGrade,
@@ -61,14 +61,14 @@ export class Candidate extends Document {
   @Prop({ type: [{ language: String, grade: String }], default: [] })
   langGrades: LangGrade[];
 
-  @Prop({ type: [hardSkillSchema], default: [] })
-  hardSkills: hardSkill[];
+  @Prop({ type: [HardSkillSchema], default: [] })
+  hardSkills: HardSkill[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
 
-  @Prop({ type: [String], enum: DrivingGrade, default: [] })
-  drivingLicence: DrivingGrade[];
+  @Prop({ type: [String], enum: DrivingLicense, default: [] })
+  drivingLicence: DrivingLicense[];
 
   @Prop({ default: false })
   criminalRecords: boolean;
@@ -76,8 +76,8 @@ export class Candidate extends Document {
   @Prop({ type: String, default: [] })
   extraInfo: string;
 
-  @Prop({ default: CandidateStatuses.pending })
-  status: CandidateStatuses;
+  @Prop({ default: CandidateStatus.PENDING })
+  status: CandidateStatus;
 
   @Prop({ type: Number, default: null })
   telegramId: number;

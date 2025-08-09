@@ -1,6 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
-import { DrivingGrade, EmployeeStatusEnum, Region, Sex } from 'src/enums/enums';
+import {
+  DrivingLicense,
+  EmployeeStatus,
+  Region,
+  Sex,
+} from 'src/enums/enums';
 
 import { Department } from 'src/modules/department/entities/department.entity';
 import { Position } from 'src/modules/position/entities/position.entity';
@@ -16,8 +21,8 @@ import {
   JobRequirement,
   LangGrade,
   LangGradeSchema,
-  hardSkill,
-  hardSkillSchema,
+  HardSkill,
+  HardSkillSchema,
 } from 'src/types/object.types';
 
 @Schema({ timestamps: true })
@@ -66,14 +71,14 @@ export class Employee extends Document {
   @Prop({ type: [{ language: String, grade: String }], default: [] })
   langGrades: LangGrade[];
 
-  @Prop({ type: [hardSkillSchema], default: [] })
-  hardSkills: hardSkill[];
+  @Prop({ type: [HardSkillSchema], default: [] })
+  hardSkills: HardSkill[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
 
-  @Prop({ type: [String], enum: DrivingGrade, default: [] })
-  drivingLicence: DrivingGrade[];
+  @Prop({ type: [String], enum: DrivingLicense, default: [] })
+  drivingLicence: DrivingLicense[];
 
   @Prop({ default: false })
   criminalRecords: boolean;
@@ -101,8 +106,8 @@ export class Employee extends Document {
   @Prop({ default: 0 })
   salary: number;
 
-  @Prop({ enum: EmployeeStatusEnum, required: true })
-  employeeStatus: EmployeeStatusEnum;
+  @Prop({ enum: EmployeeStatus, required: true })
+  employeeStatus: EmployeeStatus;
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);

@@ -6,7 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Candidate } from '../candidates/entities/candidate.schema';
 import { Model } from 'mongoose';
 import { MessageService } from './message.service';
-import { CandidateStatuses } from 'src/enums/enums';
+import { CandidateStatus } from 'src/enums/enums';
 
 @Update()
 export class BotUpdate {
@@ -33,11 +33,11 @@ export class BotUpdate {
     await this.botService.addTelegramId(username, tgId);
 
     if (lateCandidate) {
-      if (lateCandidate.status === CandidateStatuses.reviewing)
+      if (lateCandidate.status === CandidateStatus.REVIEWING)
         return this.messageService.reviewingMessageForCandidate(lateCandidate);
-      if (lateCandidate.status === CandidateStatuses.rejected)
+      if (lateCandidate.status === CandidateStatus.REJECTED)
         return this.messageService.rejectedMessageForCandidate(lateCandidate);
-      if (lateCandidate.status === CandidateStatuses.accepted)
+      if (lateCandidate.status === CandidateStatus.ACCEPTED)
         return this.messageService.acceptedMessageForCandidate(lateCandidate);
     }
   }

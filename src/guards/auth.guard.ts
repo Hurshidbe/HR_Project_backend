@@ -1,30 +1,50 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
-  HttpException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Http2ServerRequest } from 'http2';
-import { Observable } from 'rxjs';
+import { JwtPayload } from '../types/common.types';
+import { AUTH, MESSAGES } from '../constants/app.constants';
 
+/**
+ * Guard to verify JWT authentication tokens
+ */
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwt: JwtService) {}
+  constructor(private readonly jwtService: JwtService) {}
+
+  /**
+   * Validates the JWT token and attaches user data to request
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req = context.switchToHttp().getRequest();
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new BadRequestException("Authorization header yo'q yoki noto'g'ri");
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractTokenFromHeader(request);
+
+    if (!token) {
+      throw new UnauthorizedException(MESSAGES.UNAUTHORIZED);
     }
-    const token = authHeader.split(' ')[1];
+
     try {
-      const decoded = await this.jwt.verifyAsync(token);
-      req.user = decoded;
+      const payload: JwtPayload = await this.jwtService.verifyAsync(token);
+      request.user = payload;
       return true;
     } catch (error) {
-      throw new HttpException('token expired or invalid', 401);
+      throw new UnauthorizedException(MESSAGES.TOKEN_EXPIRED);
     }
+  }
+
+  /**
+   * Extracts JWT token from Authorization header
+   */
+  private extractTokenFromHeader(request: any): string | undefined {
+    const authHeader = request.headers?.authorization;
+
+    if (!authHeader || !authHeader.startsWith(AUTH.BEARER_PREFIX)) {
+      return undefined;
+    }
+
+    return authHeader.substring(AUTH.BEARER_PREFIX.length);
   }
 }

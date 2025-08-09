@@ -11,7 +11,7 @@ async function bootstrap() {
   const superadmin = {
     username: process.env.SUPERADMIN || '',
     password: process.env.SUPERADMIN_PASS || '',
-    role: UserRole.SuperAdmin,
+    role: UserRole.SUPER_ADMIN,
   };
 
   try {

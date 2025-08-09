@@ -15,15 +15,13 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CandidatesService } from './candidates.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Candidate } from './entities/candidate.schema';
-import { CustomBackendResponse } from 'src/interceptors/backend.response';
-import { EmployeeService } from '../employee/employee.service';
-
+import { ResponseUtil } from 'src/utils/response.util';
 import { MessageService } from '../bot/message.service';
 import { BotService } from '../bot/bot.service';
 import { RoleGuard } from 'src/guards/role.guard';
-import { Employee } from '../employee/entities/employee.schema';
 import { AcceptCandidateDto } from './dto/candidate.dtos';
 import { CreateCandidateDto } from './dto/main.candidate.dto';
+import { ApiResponse } from 'src/types/common.types';
 
 @Controller('api/v1/candidates')
 export class CandidatesController {
@@ -34,49 +32,41 @@ export class CandidatesController {
   ) {}
 
   @Post()
-  async create(@Body() data: CreateCandidateDto) {
-    let response: CustomBackendResponse;
+  async create(@Body() data: CreateCandidateDto): Promise<ApiResponse<any>> {
     try {
       const savedData = await this.candidatesService.create(data);
       await this.messageService.newCandidateMessageForUser(data);
-      response = new CustomBackendResponse(true, savedData);
+      return ResponseUtil.created(savedData, 'Candidate application submitted successfully');
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to create candidate');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Query() query: any) {
-    let response: CustomBackendResponse;
-    const filter: Partial<Candidate> = {};
-
+  async findAll(@Query() query: any): Promise<ApiResponse<any>> {
     try {
       const data = await this.candidatesService.getAll(query);
-      response = new CustomBackendResponse(true, data);
+      return ResponseUtil.success(data, 'Candidates retrieved successfully');
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to retrieve candidates');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id/reject')
-  async rejectCandidate(@Param('id') id: string) {
-    let response: CustomBackendResponse;
+  async rejectCandidate(@Param('id') id: string): Promise<ApiResponse<any>> {
     try {
       const rejected = await this.candidatesService.rejectCandidate(id);
-      const tgIdExist = rejected?.telegramId;
-      if (tgIdExist)
-        await this.messageService.rejectedMessageForCandidate(
-          rejected as Candidate,
-        );
-      response = new CustomBackendResponse(true, rejected);
+      
+      if (rejected?.telegramId) {
+        await this.messageService.rejectedMessageForCandidate(rejected as Candidate);
+      }
+      
+      return ResponseUtil.updated(rejected, 'Candidate rejected successfully');
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to reject candidate');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard)
@@ -84,8 +74,7 @@ export class CandidatesController {
   async acceptCandidate(
     @Param('id') id: string,
     @Body() dto: AcceptCandidateDto,
-  ) {
-    let response: CustomBackendResponse;
+  ): Promise<ApiResponse<any>> {
     try {
       const accepted = await this.candidatesService.acceptCandidate(
         id,
@@ -94,26 +83,26 @@ export class CandidatesController {
         dto.salary,
         dto.employeeStatus,
       );
+      
       const candidate = await this.candidatesService.findOne(id);
-      if (candidate)
+      if (candidate) {
         await this.messageService.acceptedMessageForCandidate(candidate);
-      response = new CustomBackendResponse(true, { accepted });
+      }
+      
+      return ResponseUtil.updated({ accepted }, 'Candidate accepted successfully');
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to accept candidate');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard, RoleGuard)
   @Get(':id')
-  async oneCandidate(@Param('id') id: string) {
-    let response: CustomBackendResponse;
+  async oneCandidate(@Param('id') id: string): Promise<ApiResponse<any>> {
     try {
       const updated = await this.botService.updateStatusToReviewing(id);
-      response = new CustomBackendResponse(true, { updated });
+      return ResponseUtil.success(updated, 'Candidate status updated to reviewing');
     } catch (error) {
-      response = new CustomBackendResponse(false, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to update candidate status');
     }
-    return response;
   }
 }

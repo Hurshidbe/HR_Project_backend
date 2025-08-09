@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-import { DrivingGrade, EmployeeStatusEnum, Region, Sex } from 'src/enums/enums';
+import { DrivingLicense, EmployeeStatus, Region, Sex } from 'src/enums/enums';
 import {
   CourseDto,
   EducationDto,
@@ -20,7 +20,7 @@ import {
   JobRequirementDto,
   LangGradeDto,
 } from 'src/modules/candidates/dto/candidate.dtos';
-import { hardSkill } from 'src/types/object.types';
+import { HardSkill } from 'src/types/common.types';
 
 export class CreateEmployeeDto {
   @IsString()
@@ -76,14 +76,14 @@ export class CreateEmployeeDto {
   langGrades: LangGradeDto[];
 
   @IsArray()
-  hardSkills: hardSkill[];
+  hardSkills: HardSkill[];
 
   @IsArray()
   softSkills: string[];
 
   @IsArray()
-  @IsEnum(DrivingGrade, { each: true })
-  drivingLicence: DrivingGrade[];
+  @IsEnum(DrivingLicense, { each: true })
+  drivingLicence: DrivingLicense[];
 
   @IsBoolean()
   criminalRecords: boolean;
@@ -102,8 +102,8 @@ export class CreateEmployeeDto {
   @IsNumber()
   salary: number;
 
-  @IsEnum(EmployeeStatusEnum)
-  employeeStatus: EmployeeStatusEnum;
+  @IsEnum(EmployeeStatus)
+  employeeStatus: EmployeeStatus;
 
   // don't recive from client
   @IsNumber()

@@ -1,4 +1,4 @@
-import { EmployeeStatusEnum, Region, Sex } from 'src/enums/enums';
+import { EmployeeStatus, Region, Sex } from 'src/enums/enums';
 import { Department } from 'src/modules/department/entities/department.entity';
 import { Position } from 'src/modules/position/entities/position.entity';
 
@@ -84,5 +84,5 @@ export class AcceptCandidateDto {
   department: Department;
   salary: number;
   position: Position;
-  employeeStatus: EmployeeStatusEnum;
+  employeeStatus: EmployeeStatus;
 }

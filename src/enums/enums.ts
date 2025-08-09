@@ -1,27 +1,31 @@
-import { Employee } from 'src/modules/employee/entities/employee.schema';
-
 export enum Sex {
-  male = 'male',
-  famale = 'famale',
+  MALE = 'male',
+  FEMALE = 'female',
 }
 
+/**
+ * Regions of Uzbekistan
+ */
 export enum Region {
-  Toshkent = 'Toshkent',
-  Namangan = 'Namangan',
-  Sirdaryo = 'Sirdaryo',
-  Andijon = 'Andijon',
-  Fargona = 'Fargona',
-  Jizzax = 'Jizzax',
-  Qashqadaryo = 'Qashqadaryo',
-  Navoiy = 'Navoiy',
-  Buxoro = 'Buxoro',
-  Samarqand = 'Samarqand',
-  Surxondaryo = 'Surxondaryo',
-  Xorazm = 'Xorazm',
+  TOSHKENT = 'Toshkent',
+  NAMANGAN = 'Namangan',
+  SIRDARYO = 'Sirdaryo',
+  ANDIJON = 'Andijon',
+  FARGONA = 'Fargona',
+  JIZZAX = 'Jizzax',
+  QASHQADARYO = 'Qashqadaryo',
+  NAVOIY = 'Navoiy',
+  BUXORO = 'Buxoro',
+  SAMARQAND = 'Samarqand',
+  SURXONDARYO = 'Surxondaryo',
+  XORAZM = 'Xorazm',
 }
 
-export enum LangGradeEnum {
-  No = 'No',
+/**
+ * Language proficiency levels based on CEFR
+ */
+export enum LanguageLevel {
+  NONE = 'No',
   A1 = 'A1',
   A2 = 'A2',
   B1 = 'B1',
@@ -30,8 +34,11 @@ export enum LangGradeEnum {
   C2 = 'C2',
 }
 
-export enum DrivingGrade {
-  No = 'No',
+/**
+ * Driving license categories
+ */
+export enum DrivingLicense {
+  NONE = 'No',
   A = 'A',
   B = 'B',
   C = 'C',
@@ -40,20 +47,29 @@ export enum DrivingGrade {
   F = 'F',
 }
 
-export enum CandidateStatuses {
-  pending = 'pending',
-  accepted = 'accepted',
-  rejected = 'rejected',
-  reviewing = 'reviewing',
+/**
+ * Candidate application statuses
+ */
+export enum CandidateStatus {
+  PENDING = 'pending',
+  ACCEPTED = 'accepted',
+  REJECTED = 'rejected',
+  REVIEWING = 'reviewing',
 }
 
+/**
+ * User roles in the system
+ */
 export enum UserRole {
-  SuperAdmin = 'superadmin',
-  Admin = 'admin',
+  SUPER_ADMIN = 'superadmin',
+  ADMIN = 'admin',
 }
 
-export enum EmployeeStatusEnum {
-  working = 'working',
-  fired = 'fired',
-  probation = 'probation',
+/**
+ * Employee work statuses
+ */
+export enum EmployeeStatus {
+  WORKING = 'working',
+  FIRED = 'fired',
+  PROBATION = 'probation',
 }

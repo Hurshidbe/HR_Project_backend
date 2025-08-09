@@ -13,91 +13,93 @@ import {
   Req,
 } from '@nestjs/common';
 import { createAdminDto, LoginDto } from './dto/admin.dto';
-import { response, Response } from 'express';
-import { JwtService } from '@nestjs/jwt';
 import { RoleGuard } from 'src/guards/role.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { Candidate } from '../candidates/entities/candidate.schema';
 import { UsersService } from './users.service';
-import { CustomBackendResponse } from 'src/interceptors/backend.response';
+import { ResponseUtil } from 'src/utils/response.util';
+import { ApiResponse } from 'src/types/common.types';
 
 @Controller('api/v1/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('login')
-  async login(@Body() data: LoginDto) {
-    let response: CustomBackendResponse;
+  async login(@Body() data: LoginDto): Promise<ApiResponse<any>> {
     try {
-      const { status, token } = await this.usersService.login(data);
-      response = new CustomBackendResponse(true, { status, token });
+      const result = await this.usersService.login(data);
+      return ResponseUtil.success(result.data, 'Login successful');
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Login failed');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard, RoleGuard)
   @Get()
-  async findAll() {
-    let response: CustomBackendResponse;
+  async findAll(): Promise<ApiResponse<any>> {
     try {
-      const all = await this.usersService.findAll();
-      response = new CustomBackendResponse(true, { all });
+      const result = await this.usersService.findAll();
+      return ResponseUtil.success(
+        result.data,
+        'Admin users retrieved successfully',
+      );
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(
+        error.message,
+        'Failed to retrieve admin users',
+      );
     }
-    return response;
   }
 
   @UseGuards(AuthGuard, RoleGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    let response: CustomBackendResponse;
+  async findOne(@Param('id') id: string): Promise<ApiResponse<any>> {
     try {
-      const findOne = await this.usersService.findOne(id as any);
-      response = new CustomBackendResponse(true, { findOne });
+      const result = await this.usersService.findOne(id);
+      return ResponseUtil.success(
+        result.data,
+        'Admin user retrieved successfully',
+      );
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to retrieve admin user');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard, RoleGuard)
-  async add(@Body() data: createAdminDto) {
-    let response: CustomBackendResponse;
+  @Post()
+  async add(@Body() data: createAdminDto): Promise<ApiResponse<any>> {
     try {
-      const admin = await this.usersService.addUser(data);
-      response = new CustomBackendResponse(true, { admin });
+      const result = await this.usersService.addUser(data);
+      return ResponseUtil.created(
+        result.data,
+        'Admin user created successfully',
+      );
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to create admin user');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() data: LoginDto) {
-    let response: CustomBackendResponse;
+  async update(
+    @Param('id') id: string,
+    @Body() data: LoginDto,
+  ): Promise<ApiResponse<any>> {
     try {
       const updated = await this.usersService.update(id, data);
-      response = new CustomBackendResponse(true, { updated });
+      return ResponseUtil.updated(updated, 'Admin user updated successfully');
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to update admin user');
     }
-    return response;
   }
 
   @UseGuards(AuthGuard, RoleGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    let response: CustomBackendResponse;
+  async remove(@Param('id') id: string): Promise<ApiResponse<any>> {
     try {
       const removed = await this.usersService.remove(id);
-      response = new CustomBackendResponse(true, { removed });
+      return ResponseUtil.success(removed, 'Admin user deleted successfully');
     } catch (error) {
-      response = new CustomBackendResponse(false, {}, [error.message]);
+      return ResponseUtil.error(error.message, 'Failed to delete admin user');
     }
-    return response;
   }
 }

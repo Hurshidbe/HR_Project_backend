@@ -17,85 +17,92 @@ import {
   LangGradeDto,
 } from './candidate.dtos';
 import { Type } from 'class-transformer';
-import { CandidateStatuses, DrivingGrade, Region, Sex } from 'src/enums/enums';
-import { hardSkill } from 'src/types/object.types';
+import { CandidateStatus, DrivingLicense, Region, Sex } from 'src/enums/enums';
+import { HardSkill } from 'src/types/common.types';
 
+/**
+ * DTO for creating a new candidate application
+ */
 export class CreateCandidateDto {
-  @IsString()
+  @IsString({ message: 'Full name must be a string' })
   fullName: string;
 
-  @IsEnum(Sex)
+  @IsEnum(Sex, { message: 'Sex must be either male or female' })
   sex: Sex;
 
   @Type(() => Date)
-  @IsDate()
+  @IsDate({ message: 'Birth date must be a valid date' })
   birthDate: string;
 
-  @IsString()
+  @IsString({ message: 'Phone number must be a string' })
   phoneNumber: string;
 
-  @IsString()
+  @IsString({ message: 'Email must be a string' })
   email: string;
 
-  @IsString()
+  @IsString({ message: 'Telegram username must be a string' })
   tgUsername: string;
 
-  @IsEnum(Region)
+  @IsEnum(Region, { message: 'Region must be a valid region' })
   region: Region;
 
-  @IsString()
+  @IsString({ message: 'Address must be a string' })
   address: string;
 
-  @IsString()
+  @IsString({ message: 'Occupation must be a string' })
   occupation: string;
 
-  @ValidateNested()
+  @ValidateNested({ message: 'Job requirement must be valid' })
   @Type(() => JobRequirementDto)
   jobRequirement: JobRequirementDto;
 
-  @IsArray()
+  @IsArray({ message: 'Experience must be an array' })
   @ValidateNested({ each: true })
   @Type(() => ExperienceDto)
   experience: ExperienceDto[];
 
-  @IsArray()
+  @IsArray({ message: 'Education must be an array' })
   @ValidateNested({ each: true })
   @Type(() => EducationDto)
   education: EducationDto[];
 
-  @IsArray()
+  @IsArray({ message: 'Courses must be an array' })
   @ValidateNested({ each: true })
   @Type(() => CourseDto)
   course: CourseDto[];
 
-  @IsArray()
+  @IsArray({ message: 'Language grades must be an array' })
   @ValidateNested({ each: true })
   @Type(() => LangGradeDto)
   langGrades: LangGradeDto[];
 
-  @IsArray()
-  hardSkills: hardSkill[];
+  @IsArray({ message: 'Hard skills must be an array' })
+  hardSkills: HardSkill[];
 
-  @IsArray()
+  @IsArray({ message: 'Soft skills must be an array' })
   softSkills: string[];
 
-  @IsArray()
-  @IsEnum(DrivingGrade, { each: true })
-  drivingLicence: DrivingGrade[];
+  @IsArray({ message: 'Driving license must be an array' })
+  @IsEnum(DrivingLicense, {
+    each: true,
+    message: 'Each driving license must be a valid category',
+  })
+  drivingLicence: DrivingLicense[];
 
-  @IsBoolean()
+  @IsBoolean({ message: 'Criminal records must be a boolean' })
   criminalRecords: boolean;
 
-  @IsString()
+  @IsString({ message: 'Extra info must be a string' })
   extraInfo: string;
 
-  // don't recive from client
-  @IsEnum(CandidateStatuses)
+  // Server-side only fields - not received from client
+  @IsEnum(CandidateStatus, {
+    message: 'Status must be a valid candidate status',
+  })
   @IsOptional()
-  status?: CandidateStatuses;
+  status?: CandidateStatus;
 
-  // don't recive from client
-  @IsNumber()
+  @IsNumber({}, { message: 'Telegram ID must be a number' })
   @IsOptional()
   telegramId?: number;
 }

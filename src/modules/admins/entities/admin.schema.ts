@@ -10,7 +10,7 @@ export class Admin extends Document {
   @Prop()
   password: string;
 
-  @Prop({ type: String, enum: UserRole, default: UserRole.Admin })
+  @Prop({ type: String, enum: UserRole, default: UserRole.ADMIN })
   role: UserRole;
 }
 
