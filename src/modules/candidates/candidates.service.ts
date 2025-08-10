@@ -6,7 +6,6 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Candidate } from './entities/candidate.schema';
 import { Model, FilterQuery } from 'mongoose';
-import { Status } from 'cloudinary';
 
 import { Employee } from '../employee/entities/employee.schema';
 import { Department } from '../department/entities/department.entity';
