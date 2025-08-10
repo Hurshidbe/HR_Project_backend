@@ -12,7 +12,7 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import { createAdminDto, LoginDto } from './dto/admin.dto';
+import { createAdminDto, LoginDto } from './dto/user.dto';
 import { response, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { RoleGuard } from 'src/guards/role.guard';

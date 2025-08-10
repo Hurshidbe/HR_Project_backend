@@ -11,10 +11,10 @@ export class RoleGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     const user = req.user;
     if (!user) {
-      throw new ForbiddenException('Foydalanuvchi aniqlanmadi');
+      throw new ForbiddenException('user is not defined');
     }
     if (user.role !== 'superadmin') {
-      throw new ForbiddenException('bu amal superadminlar uchun ishlaydi');
+      throw new ForbiddenException('this action only open for superadmins');
     }
     return true;
   }

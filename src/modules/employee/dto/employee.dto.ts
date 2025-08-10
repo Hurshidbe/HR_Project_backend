@@ -20,7 +20,6 @@ import {
   JobRequirementDto,
   LangGradeDto,
 } from 'src/modules/candidates/dto/candidate.dtos';
-import { hardSkill } from 'src/types/object.types';
 
 export class CreateEmployeeDto {
   @IsString()
@@ -76,7 +75,7 @@ export class CreateEmployeeDto {
   langGrades: LangGradeDto[];
 
   @IsArray()
-  hardSkills: hardSkill[];
+  hardSkills: string[];
 
   @IsArray()
   softSkills: string[];

@@ -31,7 +31,9 @@ export class BotService {
       await this.bot.telegram.sendMessage(chatId, message, {
         parse_mode: 'HTML',
       });
-    } catch (error) {}
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   async addTelegramId(tgUsername: string, telegramId: number) {

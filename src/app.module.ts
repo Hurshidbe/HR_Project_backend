@@ -53,10 +53,10 @@ dotenv.config();
     RoleGuard,
     BotUpdate,
     MessageService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: ThrottlerGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

@@ -18,7 +18,6 @@ import {
 } from './candidate.dtos';
 import { Type } from 'class-transformer';
 import { CandidateStatuses, DrivingGrade, Region, Sex } from 'src/enums/enums';
-import { hardSkill } from 'src/types/object.types';
 
 export class CreateCandidateDto {
   @IsString()
@@ -74,7 +73,7 @@ export class CreateCandidateDto {
   langGrades: LangGradeDto[];
 
   @IsArray()
-  hardSkills: hardSkill[];
+  hardSkills: string[];
 
   @IsArray()
   softSkills: string[];

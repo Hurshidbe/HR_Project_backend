@@ -71,10 +71,3 @@ export class JobRequirement {
 }
 export const JobRequirementsSchema =
   SchemaFactory.createForClass(JobRequirement);
-
-@Schema({ _id: false })
-export class hardSkill {
-  @Prop()
-  hardSkills: string;
-}
-export const hardSkillSchema = SchemaFactory.createForClass(hardSkill);

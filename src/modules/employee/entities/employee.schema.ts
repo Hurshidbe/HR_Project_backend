@@ -16,8 +16,6 @@ import {
   JobRequirement,
   LangGrade,
   LangGradeSchema,
-  hardSkill,
-  hardSkillSchema,
 } from 'src/types/object.types';
 
 @Schema({ timestamps: true })
@@ -66,8 +64,8 @@ export class Employee extends Document {
   @Prop({ type: [{ language: String, grade: String }], default: [] })
   langGrades: LangGrade[];
 
-  @Prop({ type: [hardSkillSchema], default: [] })
-  hardSkills: hardSkill[];
+  @Prop({ type: [String], default: [] })
+  hardSkills: string[];
 
   @Prop({ type: [String], default: [] })
   softSkills: string[];
@@ -78,7 +76,7 @@ export class Employee extends Document {
   @Prop({ default: false })
   criminalRecords: boolean;
 
-  @Prop({ type: String, default: [] })
+  @Prop({ type: String, default: 'empty' })
   extraInfo: string;
 
   @Prop({ type: Number, default: null })

@@ -16,7 +16,9 @@ export class AuthGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new BadRequestException("Authorization header yo'q yoki noto'g'ri");
+      throw new BadRequestException(
+        'Authorization header is not defined or incorrect',
+      );
     }
     const token = authHeader.split(' ')[1];
     try {

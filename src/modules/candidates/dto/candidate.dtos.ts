@@ -7,6 +7,7 @@ import {
   IsBoolean,
   IsDate,
   IsEnum,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -15,6 +16,7 @@ import {
 import { Type } from 'class-transformer';
 export class JobRequirementDto {
   @IsString()
+  @IsNotEmpty()
   position: string;
 
   @IsString()
@@ -23,9 +25,11 @@ export class JobRequirementDto {
 
 export class CourseDto {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
+  @IsNotEmpty()
   profession: string;
 
   @Type(() => Date)
@@ -38,9 +42,11 @@ export class CourseDto {
 }
 
 export class EducationDto {
+  @IsNotEmpty()
   @IsString()
   name: string;
 
+  @IsNotEmpty()
   @IsString()
   speciality: string;
 
@@ -54,13 +60,14 @@ export class EducationDto {
 }
 
 export class ExperienceDto {
+  @IsNotEmpty()
   @IsString()
   position: string;
 
+  @IsNotEmpty()
   @IsString()
   company: string;
 
-  @IsString()
   salary: string;
 
   @Type(() => Date)
@@ -81,8 +88,14 @@ export class LangGradeDto {
 }
 
 export class AcceptCandidateDto {
+  @IsString()
   department: Department;
+
   salary: number;
+
+  @IsString()
   position: Position;
+
+  @IsString()
   employeeStatus: EmployeeStatusEnum;
 }

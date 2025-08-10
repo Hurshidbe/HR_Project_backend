@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Admin, AdminSchema } from 'src/modules/admins/entities/admin.schema';
+import { Admin, AdminSchema } from 'src/modules/admins/entities/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import {

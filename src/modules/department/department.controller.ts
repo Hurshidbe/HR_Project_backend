@@ -7,12 +7,15 @@ import {
   Delete,
   HttpException,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/department.dto';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { response } from 'express';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('api/v1/departments')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}

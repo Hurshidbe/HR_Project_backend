@@ -50,8 +50,6 @@ export class CandidatesController {
   @Get()
   async findAll(@Query() query: any) {
     let response: CustomBackendResponse;
-    const filter: Partial<Candidate> = {};
-
     try {
       const data = await this.candidatesService.getAll(query);
       response = new CustomBackendResponse(true, data);

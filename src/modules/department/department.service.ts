@@ -32,7 +32,7 @@ export class DepartmentService {
     const updated = await this.departmentRepo.findByIdAndUpdate(id, dto, {
       new: true,
     });
-    if (!updated) throw new NotFoundException('Department not found');
+    if (!updated) throw new NotFoundException('department not found');
     return updated;
   }
 

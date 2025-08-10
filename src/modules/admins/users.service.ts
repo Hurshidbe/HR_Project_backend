@@ -4,9 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Admin } from './entities/admin.schema';
+import { Admin } from './entities/user.schema';
 import { Model } from 'mongoose';
-import { createAdminDto, LoginDto } from './dto/admin.dto';
+import { createAdminDto, LoginDto } from './dto/user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Candidate } from '../candidates/entities/candidate.schema';
 import { response } from 'express';
@@ -21,8 +21,13 @@ export class UsersService {
   ) {}
 
   async create(data: createAdminDto) {
-    const saved = await this.AdminRepo.create(data);
-    return { status: 'success', saved };
+    const isExist = await this.AdminRepo.findOne({ username: data.username });
+    if (isExist) {
+      console.log('superadmin already registered');
+    } else {
+      const saved = await this.AdminRepo.create(data);
+      return { status: 'success', saved };
+    }
   }
 
   async login(data: LoginDto) {
@@ -30,7 +35,6 @@ export class UsersService {
     if (!user) throw new BadRequestException('username or password incorrect');
     if (user.password !== data.password)
       throw new BadRequestException('username or password incorrect');
-    console.log(user);
     const token = await this.jwt.signAsync({
       username: user.username,
       role: user.role,
@@ -51,6 +55,8 @@ export class UsersService {
   }
 
   async addUser(data: createAdminDto) {
+    const isUnique = await this.AdminRepo.findOne({ username: data.username });
+    if (isUnique) throw new BadRequestException('username already exist');
     const saved = await this.AdminRepo.create(data);
     return { status: 'success', saved };
   }

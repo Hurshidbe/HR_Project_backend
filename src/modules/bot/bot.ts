@@ -24,8 +24,7 @@ export class BotUpdate {
     const tgId = ctx.from?.id;
     const username = ctx.from?.username;
     if (!username) throw new BadRequestException('username must have');
-    if (tgId === undefined)
-      throw new BadRequestException('telegram id must have');
+    if (!tgId) throw new BadRequestException('telegram id must have');
 
     const lateCandidate = await this.cadidateRepo.findOne({
       tgUsername: username.toLowerCase(),

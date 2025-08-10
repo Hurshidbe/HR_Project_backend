@@ -6,11 +6,15 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { METHODS } from 'http';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
+  const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+
+  const allowedOrigins = (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim());
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://192.168.11.141:5000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    origin: allowedOrigins,
+    methods: METHODS,
     credentials: true,
   });
 

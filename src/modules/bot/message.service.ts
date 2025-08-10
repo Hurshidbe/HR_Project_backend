@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { BotService } from './bot.service';
 import { Message, Update } from 'nestjs-telegraf';
-import { createAdminDto } from '../admins/dto/admin.dto';
+import { createAdminDto } from '../admins/dto/user.dto';
 import { Candidate } from '../candidates/entities/candidate.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateCandidateDto } from '../candidates/dto/main.candidate.dto';
