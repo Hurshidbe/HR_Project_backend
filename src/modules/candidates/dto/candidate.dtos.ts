@@ -19,8 +19,7 @@ export class JobRequirementDto {
   @IsNotEmpty()
   position: string;
 
-  @IsString()
-  salary: string;
+  salary: number;
 }
 
 export class CourseDto {

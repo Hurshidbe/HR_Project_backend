@@ -22,9 +22,9 @@ dotenv.config();
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot({
-      throttlers: [{ ttl: 20000, limit: 5 }],
-    }),
+    // ThrottlerModule.forRoot({
+    //   throttlers: [{ ttl: 20000, limit: 50 }],
+    // }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MongooseModule.forRoot(process.env.DB_URL || ''),
     JwtModule.registerAsync({
@@ -53,10 +53,10 @@ dotenv.config();
     RoleGuard,
     BotUpdate,
     MessageService,
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ThrottlerGuard,
+    // },
   ],
 })
 export class AppModule {}

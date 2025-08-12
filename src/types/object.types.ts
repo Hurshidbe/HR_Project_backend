@@ -67,7 +67,7 @@ export class JobRequirement {
   position: string;
 
   @Prop()
-  salary: string;
+  salary: number;
 }
 export const JobRequirementsSchema =
   SchemaFactory.createForClass(JobRequirement);

@@ -41,10 +41,10 @@ export enum DrivingGrade {
 }
 
 export enum CandidateStatuses {
-  pending = 'pending',
-  accepted = 'accepted',
-  rejected = 'rejected',
-  reviewing = 'reviewing',
+  pending = 'PENDING',
+  accepted = 'ACCEPTED',
+  rejected = 'REJECTED',
+  reviewing = 'REVIEWING',
 }
 
 export enum UserRole {

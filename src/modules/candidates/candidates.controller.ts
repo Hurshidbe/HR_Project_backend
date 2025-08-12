@@ -24,6 +24,7 @@ import { RoleGuard } from 'src/guards/role.guard';
 import { Employee } from '../employee/entities/employee.schema';
 import { AcceptCandidateDto } from './dto/candidate.dtos';
 import { CreateCandidateDto } from './dto/main.candidate.dto';
+import { Sex } from 'src/enums/enums';
 
 @Controller('api/v1/candidates')
 export class CandidatesController {
@@ -50,8 +51,19 @@ export class CandidatesController {
   @Get()
   async findAll(@Query() query: any) {
     let response: CustomBackendResponse;
+    const filter: any = {};
+    if (query.fullName)
+      filter.fullName = { $regex: query.fullName, $options: 'i' };
+    if (query.sex) filter.sex = { $regex: query.sex, $options: 'i' };
+    if (query.status) filter.status = { $regex: query.status, $options: 'i' };
+    if (query.region) filter.region = { $regex: query.region, $options: 'i' };
+    if (query.startDate && query.endDate)
+      filter.birthDate = {
+        $gte: new Date(query.startDate),
+        $lte: new Date(query.endDate),
+      };
     try {
-      const data = await this.candidatesService.getAll(query);
+      const data = await this.candidatesService.getAll(filter);
       response = new CustomBackendResponse(true, data);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);

@@ -8,9 +8,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
-  const allowedOrigins = (process.env.CORS_ORIGINS || '')
-    .split(',')
-    .map((origin) => origin.trim());
+  // Default CORS origins if not set in environment
+  const defaultOrigins = ['http://localhost:4200', 'http://localhost:3000'];
+  const allowedOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',').map((origin) => origin.trim())
+    : defaultOrigins;
 
   app.enableCors({
     origin: allowedOrigins,
@@ -39,7 +41,9 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  await app.listen(process.env.PORT ?? 3000);
-  console.warn(`APIs documentataion : http://localhost:5000/apis`);
+  const port = process.env.PORT ?? 5000;
+  await app.listen(port);
+  console.warn(`Server running on port ${port}`);
+  console.warn(`APIs documentation : http://localhost:${port}/apis`);
 }
 bootstrap();

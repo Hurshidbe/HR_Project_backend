@@ -22,7 +22,6 @@ export class CandidatesService {
 
   async create(data: CreateCandidateDto) {
     const candidate = await this.CandidateRepo.create(data);
-
     return candidate;
   }
 
