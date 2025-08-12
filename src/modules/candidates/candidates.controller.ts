@@ -58,7 +58,7 @@ export class CandidatesController {
     if (query.status) filter.status = { $regex: query.status, $options: 'i' };
     if (query.region) filter.region = { $regex: query.region, $options: 'i' };
     if (query.startDate && query.endDate)
-      filter.birthDate = {
+      filter.createdAt = {
         $gte: new Date(query.startDate),
         $lte: new Date(query.endDate),
       };
