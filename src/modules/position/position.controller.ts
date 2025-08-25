@@ -42,6 +42,18 @@ export class PositionController {
     return response;
   }
 
+  @Get('with-departments')
+  async findAllWithPopulatedDepartments() {
+    let response: CustomBackendResponse;
+    try {
+      const data = await this.positionService.getAllWithPopulatedDepartments();
+      response = new CustomBackendResponse(true, { data }, []);
+    } catch (error) {
+      response = new CustomBackendResponse(false, {}, [error.message]);
+    }
+    return response;
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     let response: CustomBackendResponse;
@@ -55,7 +67,7 @@ export class PositionController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, data: CreatePositionDto) {
+  async update(@Param('id') id: string, @Body() data: CreatePositionDto) {
     let response: CustomBackendResponse;
     try {
       const updated = await this.positionService.update(id, data);

@@ -50,7 +50,7 @@ export class Employee extends Document {
   occupation: string;
 
   @Prop({ type: { JobRequirementsSchema }, default: {} })
-  jobRequirements: JobRequirement;
+  jobRequirement: JobRequirement;
 
   @Prop({ type: [ExperienceSchema], default: [] })
   experience: Experience[];

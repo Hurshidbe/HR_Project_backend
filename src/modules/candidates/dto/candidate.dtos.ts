@@ -87,14 +87,21 @@ export class LangGradeDto {
 }
 
 export class AcceptCandidateDto {
-  @IsString()
+  @ValidateNested()
+  @Type(() => Department)
+  @IsNotEmpty()
   department: Department;
 
-  salary: number;
-
-  @IsString()
+  @ValidateNested()
+  @Type(() => Position)
+  @IsNotEmpty()
   position: Position;
 
-  @IsString()
+  @IsNumber()
+  @IsOptional()
+  salary: number;
+
+  @IsEnum(EmployeeStatusEnum)
+  @IsNotEmpty()
   employeeStatus: EmployeeStatusEnum;
 }

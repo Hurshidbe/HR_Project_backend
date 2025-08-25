@@ -50,11 +50,31 @@ export class CandidatesService {
     const isExist = await this.CandidateRepo.findOne({ _id: id });
     if (!isExist) throw new NotFoundException('candidate not found by this id');
     const accepted = await this.EmployeeRepo.create({
-      ...isExist,
+      fullName: isExist.fullName,
+      sex: isExist.sex,
+      birthDate: isExist.birthDate,
+      phoneNumber: isExist.phoneNumber,
+      email: isExist.email,
+      tgUsername: isExist.tgUsername,
+      region: isExist.region,
+      address: isExist.address,
+      occupation: isExist.occupation,
+      jobRequirement: isExist.jobRequirement,
+      experience: isExist.experience,
+      education: isExist.education,
+      course: isExist.course,
+      langGrades: isExist.langGrades,
+      hardSkills: isExist.hardSkills,
+      softSkills: isExist.softSkills,
+      drivingLicence: isExist.drivingLicence,
+      criminalRecords: isExist.criminalRecords,
+      extraInfo: isExist.extraInfo,
+      telegramId: isExist.telegramId,
+
       department,
       position,
       salary,
-      employeeStatus: employeeStatus,
+      employeeStatus,
     });
     return accepted;
   }
@@ -62,5 +82,9 @@ export class CandidatesService {
   async findOne(id: string) {
     const candidate = this.CandidateRepo.findById(id);
     return candidate;
+  }
+
+  async delete(id: string) {
+    return this.CandidateRepo.deleteOne({ _id: id });
   }
 }

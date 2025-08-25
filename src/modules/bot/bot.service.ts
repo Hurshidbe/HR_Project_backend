@@ -54,11 +54,15 @@ export class BotService {
   }
 
   async updateStatusToReviewing(id: string) {
-    const updated = await this.candidateRepo.findByIdAndUpdate(id, {
-      status: CandidateStatuses.reviewing,
-    });
-    if (!updated) throw new BadRequestException('not updated');
-    await this.messageService.reviewingMessageForCandidate(updated);
-    return updated;
+    const isNewCandidate = await this.candidateRepo.findById(id);
+    if (isNewCandidate?.status == CandidateStatuses.pending) {
+      const updated = await this.candidateRepo.findByIdAndUpdate(id, {
+        status: CandidateStatuses.reviewing,
+      });
+      if (!updated) throw new BadRequestException('not updated');
+      await this.messageService.reviewingMessageForCandidate(updated);
+      return updated;
+    }
+    return isNewCandidate;
   }
 }

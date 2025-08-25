@@ -28,7 +28,7 @@ export class CreateCandidateDto {
 
   @Type(() => Date)
   @IsDate()
-  birthDate: string;
+  birthDate: Date;
 
   @IsString()
   phoneNumber: string;

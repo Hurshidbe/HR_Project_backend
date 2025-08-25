@@ -54,14 +54,18 @@ export class CandidatesController {
     const filter: any = {};
     if (query.fullName)
       filter.fullName = { $regex: query.fullName, $options: 'i' };
-    if (query.sex) filter.sex = { $regex: query.sex, $options: 'i' };
-    if (query.status) filter.status = { $regex: query.status, $options: 'i' };
-    if (query.region) filter.region = { $regex: query.region, $options: 'i' };
-    if (query.startDate && query.endDate)
-      filter.createdAt = {
-        $gte: new Date(query.startDate),
-        $lte: new Date(query.endDate),
-      };
+    if (query.sex) filter.sex = query.sex;
+    if (query.status) filter.status = query.status;
+    if (query.region) filter.region = query.region;
+    if (query.startDate || query.endDate) {
+      filter.createdAt = {};
+      if (query.startDate) {
+        filter.createdAt.$gte = new Date(query.startDate);
+      }
+      if (query.endDate) {
+        filter.createdAt.$lte = new Date(query.endDate);
+      }
+    }
     try {
       const data = await this.candidatesService.getAll(filter);
       response = new CustomBackendResponse(true, data);
@@ -101,12 +105,13 @@ export class CandidatesController {
         id,
         dto.department,
         dto.position,
-        dto.salary,
+        dto.salary || 0,
         dto.employeeStatus,
       );
       const candidate = await this.candidatesService.findOne(id);
       if (candidate)
         await this.messageService.acceptedMessageForCandidate(candidate);
+      await this.candidatesService.delete(id);
       response = new CustomBackendResponse(true, { accepted });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);

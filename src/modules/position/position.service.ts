@@ -15,7 +15,30 @@ export class PositionService {
   }
 
   async getAll() {
-    return this.PositionRepo.find().populate('departmentId');
+    try {
+      const positions = await this.PositionRepo.find()
+        .lean();
+      
+      console.log('Positions without populated departments:', positions);
+      return positions;
+    } catch (error) {
+      console.error('Error fetching positions:', error);
+      throw new HttpException('Failed to fetch positions', 500);
+    }
+  }
+
+  async getAllWithPopulatedDepartments() {
+    try {
+      const positions = await this.PositionRepo.find()
+        .populate('departmentId', 'name _id')
+        .lean();
+      
+      console.log('Positions with populated departments:', positions);
+      return positions;
+    } catch (error) {
+      console.error('Error fetching positions with populated departments:', error);
+      throw new HttpException('Failed to fetch positions with populated departments', 500);
+    }
   }
 
   async getById(id: string) {

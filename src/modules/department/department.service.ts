@@ -7,11 +7,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateDepartmentDto } from './dto/department.dto';
 import { Department } from './entities/department.entity';
+import { Position } from '../position/entities/position.entity';
 
 @Injectable()
 export class DepartmentService {
   constructor(
     @InjectModel(Department.name) private departmentRepo: Model<Department>,
+    @InjectModel(Position.name) private positionRepo: Model<Position>,
   ) {}
 
   async create(dto: CreateDepartmentDto) {
@@ -20,12 +22,33 @@ export class DepartmentService {
     throw new BadRequestException('already exist');
   }
 
-  findAll() {
-    return this.departmentRepo.find();
+  async findAll() {
+    const departments = await this.departmentRepo.find();
+
+    const departmentsWithPositions = await Promise.all(
+      departments.map(async (dept) => {
+        const positions = await this.positionRepo.find({
+          departmentId: dept._id,
+        });
+        return {
+          ...dept.toObject(),
+          positions: positions,
+        };
+      }),
+    );
+
+    return departmentsWithPositions;
   }
 
-  findOne(id: string) {
-    return this.departmentRepo.findById(id);
+  async findOne(id: string) {
+    const department = await this.departmentRepo.findById(id);
+    if (!department) return null;
+
+    const positions = await this.positionRepo.find({ departmentId: id });
+    return {
+      ...department.toObject(),
+      positions: positions,
+    };
   }
 
   async update(id: string, dto: CreateDepartmentDto) {
@@ -42,5 +65,9 @@ export class DepartmentService {
       throw new NotFoundException('department not found');
     }
     return await this.departmentRepo.findByIdAndDelete(id);
+  }
+
+  async findAllWithPositions() {
+    return this.findAll();
   }
 }

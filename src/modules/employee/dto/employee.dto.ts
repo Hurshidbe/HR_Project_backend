@@ -28,9 +28,7 @@ export class CreateEmployeeDto {
   @IsEnum(Sex)
   sex: Sex;
 
-  @Type(() => Date)
-  @IsDate()
-  birthDate: string;
+  birthDate: Date;
 
   @IsString()
   phoneNumber: string;
@@ -50,7 +48,7 @@ export class CreateEmployeeDto {
   @IsString()
   occupation: string;
 
-  @ValidateNested({ each: true })
+  @ValidateNested()
   @Type(() => JobRequirementDto)
   jobRequirements: JobRequirementDto;
 
@@ -90,16 +88,17 @@ export class CreateEmployeeDto {
   @IsString()
   extraInfo: string;
 
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   department: string;
 
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
   position: string;
 
   @IsNumber()
-  salary: number;
+  @IsOptional()
+  salary?: number;
 
   @IsEnum(EmployeeStatusEnum)
   employeeStatus: EmployeeStatusEnum;

@@ -44,6 +44,18 @@ export class DepartmentController {
     return response;
   }
 
+  @Get('with-positions')
+  async findAllWithPositions() {
+    let response: CustomBackendResponse;
+    try {
+      const data = await this.departmentService.findAllWithPositions();
+      response = new CustomBackendResponse(true, { data });
+    } catch (error) {
+      response = new CustomBackendResponse(false, {}, [error.message]);
+    }
+    return response;
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     let response: CustomBackendResponse;

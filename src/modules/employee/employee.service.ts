@@ -37,4 +37,8 @@ export class EmployeeService {
   async updateEmployeePosition(id: string, position: Position) {
     return this.EmployeeRepo.findByIdAndUpdate(id, { position });
   }
+
+  async findAll(filter) {
+    return this.EmployeeRepo.find(filter);
+  }
 }

@@ -65,6 +65,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard, RoleGuard)
+  @Post()
   async add(@Body() data: createAdminDto) {
     let response: CustomBackendResponse;
     try {
