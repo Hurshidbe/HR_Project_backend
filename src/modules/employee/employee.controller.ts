@@ -19,6 +19,7 @@ import mongoose from 'mongoose';
 import { PositionService } from '../position/position.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { resolve } from 'path';
+import { EmployeeStatusEnum } from 'src/enums/enums';
 
 @UseGuards(AuthGuard)
 @Controller('api/v1/employee')
@@ -71,6 +72,25 @@ export class EmployeeController {
     try {
       const employee = await this.employeeService.findOne(id);
       response = new CustomBackendResponse(true, { employee });
+    } catch (error) {
+      response = new CustomBackendResponse(false, [error.message]);
+    }
+    return response;
+  }
+
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: string,
+    @Body() body: { status: EmployeeStatusEnum },
+  ) {
+    let response: CustomBackendResponse;
+    try {
+      const employee = await this.employeeService.findOne(id);
+      const updated = await this.employeeService.updateEmployeeStatus(
+        id,
+        body.status,
+      );
+      response = new CustomBackendResponse(true, { updated });
     } catch (error) {
       response = new CustomBackendResponse(false, [error.message]);
     }

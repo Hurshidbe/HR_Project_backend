@@ -10,6 +10,7 @@ import {
   Query,
   Patch,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CandidatesService } from './candidates.service';
@@ -77,7 +78,7 @@ export class CandidatesController {
 
   @UseGuards(AuthGuard)
   @Patch(':id/reject')
-  async rejectCandidate(@Param('id') id: string) {
+  async reject(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {
       const rejected = await this.candidatesService.rejectCandidate(id);
@@ -95,10 +96,7 @@ export class CandidatesController {
 
   @UseGuards(AuthGuard)
   @Patch(':id/accept')
-  async acceptCandidate(
-    @Param('id') id: string,
-    @Body() dto: AcceptCandidateDto,
-  ) {
+  async accept(@Param('id') id: string, @Body() dto: AcceptCandidateDto) {
     let response: CustomBackendResponse;
     try {
       const accepted = await this.candidatesService.acceptCandidate(
@@ -128,6 +126,19 @@ export class CandidatesController {
       response = new CustomBackendResponse(true, { updated });
     } catch (error) {
       response = new CustomBackendResponse(false, [error.message]);
+    }
+    return response;
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    let response: CustomBackendResponse;
+    try {
+      const rejected = await this.candidatesService.rejectCandidate(id);
+      response = new CustomBackendResponse(true, rejected);
+    } catch (error) {
+      response = new CustomBackendResponse(false, {}, [error.message]);
     }
     return response;
   }

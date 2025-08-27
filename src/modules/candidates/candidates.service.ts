@@ -28,7 +28,9 @@ export class CandidatesService {
   async getAll(filter: FilterQuery<Candidate>) {
     return this.CandidateRepo.find(filter);
   }
-
+  async deleteById(id: string) {
+    return this.CandidateRepo.deleteOne({ id });
+  }
   async rejectCandidate(id: string) {
     const isExist = await this.CandidateRepo.findOne({ _id: id });
     if (!isExist) throw new NotFoundException('user not found');

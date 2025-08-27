@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { SalaryHistory } from '../history/entities/salaryHistory.schema';
 import { PositionHistory } from '../history/entities/positionHistory.schema';
 import { Position } from '../position/entities/position.entity';
+import { EmployeeStatusEnum } from 'src/enums/enums';
 
 @Injectable()
 export class EmployeeService {
@@ -31,11 +32,19 @@ export class EmployeeService {
   }
 
   async updateEmployeeSalary(id: string, salary: number) {
-    return this.EmployeeRepo.findByIdAndUpdate(id, { salary });
+    return this.EmployeeRepo.findByIdAndUpdate(id, { salary }, { new: true });
+  }
+
+  async updateEmployeeStatus(id: string, status: EmployeeStatusEnum) {
+    return this.EmployeeRepo.findByIdAndUpdate(
+      id,
+      { employeeStatus: status },
+      { new: true },
+    );
   }
 
   async updateEmployeePosition(id: string, position: Position) {
-    return this.EmployeeRepo.findByIdAndUpdate(id, { position });
+    return this.EmployeeRepo.findByIdAndUpdate(id, { position }, { new: true });
   }
 
   async findAll(filter) {

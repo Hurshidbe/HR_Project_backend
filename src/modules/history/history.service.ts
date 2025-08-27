@@ -37,4 +37,40 @@ export class HistoryService {
       oldPosition,
     });
   }
+
+  async getSalaryHistory(query: any = {}) {
+    return this.salaryHistoryRepo
+      .find(query)
+      .populate('employee', 'fullName email')
+      .sort({ _id: -1 })
+      .lean();
+  }
+
+  async getPositionHistory(query: any = {}) {
+    return this.positionHistoryRepo
+      .find(query)
+      .populate('employee', 'fullName email')
+      .populate('oldPosition', 'title')
+      .populate('newPosition', 'title')
+      .sort({ createdAt: -1 })
+      .lean();
+  }
+
+  async getSalaryHistoryByEmployee(employeeId: string) {
+    return this.salaryHistoryRepo
+      .find({ employee: employeeId })
+      .populate('employee', 'fullName email')
+      .sort({ _id: -1 })
+      .lean();
+  }
+
+  async getPositionHistoryByEmployee(employeeId: string) {
+    return this.positionHistoryRepo
+      .find({ employee: employeeId })
+      .populate('employee', 'fullName email')
+      .populate('oldPosition', 'title')
+      .populate('newPosition', 'title')
+      .sort({ createdAt: -1 })
+      .lean();
+  }
 }
