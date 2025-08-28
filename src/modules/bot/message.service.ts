@@ -32,7 +32,6 @@ export class MessageService {
 🚗 <b>Driving License:</b> ${data.drivingLicence}
 🚔 <b>Criminal Record:</b> ${data.criminalRecords ? 'Yes' : 'No'}
 📝 <b>Additional Info:</b> ${data.extraInfo || ['None']}
-🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
     await this.botService.sendNotify(message, ADMIN_TG_ID);
   }
@@ -47,7 +46,6 @@ Siz topshirgan ariza hozirda mutaxassislarimiz tomonidan ko'rib chiqilmoqda.
 ⏱ Iltimos, biroz sabrli bo'ling — tez orada siz bilan bog'lanamiz.  
 📞 Telefoningiz va Telegramingizni doimiy faol holatda saqlang.
 Rahmat!
-🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
 
     await this.botService.sendNotify(message, candidateTgId);
@@ -63,7 +61,6 @@ Tabriklaymiz! Sizning arizangiz mutaxassislarimiz tomonidan ko'rib chiqildi va i
 📞 Tez orada siz bilan bog'lanamiz va keyingi bosqichlar haqida ma'lumot beramiz. 
 📲 Telefoningiz va Telegramingizni faol holatda saqlang.
 Rahmat va muvaffaqiyat tilaymiz!
-🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
     await this.botService.sendNotify(message, candidateTgId);
   }
@@ -78,7 +75,6 @@ Afsuski, arizangiz mutaxassislarimiz tomonidan ko'rib chiqildi va hozircha ijobi
 📝 Siz istasangiz, keyinchalik yana ariza topshirishingiz mumkin. Hujjatlaringizni va tajribangizni yana bir bor ko'rib chiqing.
 📲 Telefoningiz va Telegramingizni faol holatda saqlang — yangi imkoniyatlar haqida sizni xabardor qilamiz.
 Omad tilaymiz!
-🗿 <b>Your form:</b> ${`https://images.app.goo.gl/WcWHNLbRmQTUNXHHA`}
 `;
 
     await this.botService.sendNotify(message, candidateTgId);

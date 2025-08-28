@@ -135,8 +135,8 @@ export class CandidatesController {
   async delete(@Param('id') id: string) {
     let response: CustomBackendResponse;
     try {
-      const rejected = await this.candidatesService.rejectCandidate(id);
-      response = new CustomBackendResponse(true, rejected);
+      const deleted = await this.candidatesService.delete(id);
+      response = new CustomBackendResponse(true, { deleted });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }

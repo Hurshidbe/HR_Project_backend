@@ -22,32 +22,65 @@ export class EmployeeService {
     const created = await this.EmployeeRepo.create({
       ...employee,
     });
-    console.log(created);
   }
 
   async findOne(id: string) {
-    const employee = await this.EmployeeRepo.findById(id);
+    const employee = await this.EmployeeRepo.findById(id)
+      .populate('department', 'name description')
+      .populate('position', 'title description');
     if (!employee) throw new NotFoundException('employee not found');
     return employee;
   }
 
   async updateEmployeeSalary(id: string, salary: number) {
-    return this.EmployeeRepo.findByIdAndUpdate(id, { salary }, { new: true });
+    await this.EmployeeRepo.findByIdAndUpdate(id, { salary }, { new: true });
+
+    return this.EmployeeRepo.findById(id)
+      .populate('department', 'name description')
+      .populate('position', 'title description');
   }
 
   async updateEmployeeStatus(id: string, status: EmployeeStatusEnum) {
-    return this.EmployeeRepo.findByIdAndUpdate(
+    await this.EmployeeRepo.findByIdAndUpdate(
       id,
       { employeeStatus: status },
       { new: true },
     );
+
+    return this.EmployeeRepo.findById(id)
+      .populate('department', 'name description')
+      .populate('position', 'title description');
   }
 
   async updateEmployeePosition(id: string, position: Position) {
-    return this.EmployeeRepo.findByIdAndUpdate(id, { position }, { new: true });
+    const positionId = (position as any)._id || position;
+
+    const updateResult = await this.EmployeeRepo.findByIdAndUpdate(
+      id,
+      { position: positionId },
+      { new: true },
+    );
+
+    return this.EmployeeRepo.findById(id)
+      .populate('department', 'name description')
+      .populate('position', 'title description');
+  }
+
+  async updateEmployeeDepartment(id: string, departmentId: string) {
+    const updateResult = await this.EmployeeRepo.findByIdAndUpdate(
+      id,
+      { department: departmentId },
+      { new: true },
+    );
+
+    return this.EmployeeRepo.findById(id)
+      .populate('department', 'name description')
+      .populate('position', 'title description');
   }
 
   async findAll(filter) {
-    return this.EmployeeRepo.find(filter);
+    return this.EmployeeRepo.find(filter)
+      .populate('department', 'name description')
+      .populate('position', 'title description');
   }
 }

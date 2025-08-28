@@ -9,17 +9,19 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { EmployeeService } from './employee.service';
 import { HistoryService } from '../history/history.service';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { BackupOptions } from 'node:sqlite';
 import { PositionHistory } from '../history/entities/positionHistory.schema';
 import { Position } from '../position/entities/position.entity';
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { PositionService } from '../position/position.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { resolve } from 'path';
 import { EmployeeStatusEnum } from 'src/enums/enums';
+import { Employee } from './entities/employee.schema';
 
 @UseGuards(AuthGuard)
 @Controller('api/v1/employee')
@@ -28,6 +30,7 @@ export class EmployeeController {
     private readonly employeeService: EmployeeService,
     private readonly historyService: HistoryService,
     private readonly positionService: PositionService,
+    @InjectModel(Employee.name) private readonly EmployeeRepo: Model<Employee>,
   ) {}
   @Get()
   async all(@Query() query: any) {
@@ -129,8 +132,12 @@ export class EmployeeController {
     let response: CustomBackendResponse;
     try {
       const employee = await this.employeeService.findOne(id);
+      const unpopulatedEmployee = await this.EmployeeRepo.findById(id);
+      if (!unpopulatedEmployee) {
+        throw new Error('Employee not found');
+      }
       const oldPositionResult = await this.positionService.getPositionById(
-        employee.position,
+        unpopulatedEmployee.position,
       );
       if (!oldPositionResult) {
         throw new Error('Old position not found');
@@ -145,6 +152,24 @@ export class EmployeeController {
         body.newPosition,
         oldPosition,
       );
+      response = new CustomBackendResponse(true, { updated });
+    } catch (error) {
+      response = new CustomBackendResponse(false, [error.message]);
+    }
+    return response;
+  }
+  @Patch(':id/department')
+  async updateDepartment(
+    @Param('id') id: string,
+    @Body() body: { newDepartment: string },
+  ) {
+    let response: CustomBackendResponse;
+    try {
+      const updated = await this.employeeService.updateEmployeeDepartment(
+        id,
+        body.newDepartment,
+      );
+
       response = new CustomBackendResponse(true, { updated });
     } catch (error) {
       response = new CustomBackendResponse(false, [error.message]);

@@ -45,7 +45,7 @@ export class UsersService {
 
   async findAll() {
     const allUsers = await this.AdminRepo.find();
-    return { status: 'success', allUsers };
+    return allUsers;
   }
 
   async findOne(id: string) {

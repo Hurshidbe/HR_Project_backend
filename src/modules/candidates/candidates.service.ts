@@ -29,7 +29,7 @@ export class CandidatesService {
     return this.CandidateRepo.find(filter);
   }
   async deleteById(id: string) {
-    return this.CandidateRepo.deleteOne({ id });
+    return this.CandidateRepo.deleteOne({ _id: id });
   }
   async rejectCandidate(id: string) {
     const isExist = await this.CandidateRepo.findOne({ _id: id });
@@ -87,6 +87,7 @@ export class CandidatesService {
   }
 
   async delete(id: string) {
-    return this.CandidateRepo.deleteOne({ _id: id });
+    const deleted = await this.CandidateRepo.deleteOne({ _id: id });
+    return deleted;
   }
 }
