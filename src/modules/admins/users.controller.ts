@@ -31,7 +31,6 @@ export class UsersController {
     try {
       const { status, token } = await this.usersService.login(data);
       response = new CustomBackendResponse(true, { status, token });
-      console.log(data);
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
     }

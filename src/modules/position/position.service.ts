@@ -9,20 +9,15 @@ export class PositionService {
   constructor(
     @InjectModel(Position.name) private readonly PositionRepo: Model<Position>,
   ) {}
-
   async create(data: CreatePositionDto) {
     return this.PositionRepo.create(data);
   }
 
   async getAll() {
     try {
-      const positions = await this.PositionRepo.find()
-        .lean();
-      
-      console.log('Positions without populated departments:', positions);
+      const positions = await this.PositionRepo.find().lean();
       return positions;
     } catch (error) {
-      console.error('Error fetching positions:', error);
       throw new HttpException('Failed to fetch positions', 500);
     }
   }
@@ -32,12 +27,12 @@ export class PositionService {
       const positions = await this.PositionRepo.find()
         .populate('departmentId', 'name _id')
         .lean();
-      
-      console.log('Positions with populated departments:', positions);
       return positions;
     } catch (error) {
-      console.error('Error fetching positions with populated departments:', error);
-      throw new HttpException('Failed to fetch positions with populated departments', 500);
+      throw new HttpException(
+        'Failed to fetch positions with populated departments',
+        500,
+      );
     }
   }
 
