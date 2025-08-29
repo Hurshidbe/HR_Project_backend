@@ -6,9 +6,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { METHODS } from 'http';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api/v1');
   const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
-  // Default CORS origins if not set in environment
   const defaultOrigins = ['http://localhost:4200', 'http://localhost:3000'];
   const allowedOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(',').map((origin) => origin.trim())

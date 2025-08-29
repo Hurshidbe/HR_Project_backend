@@ -14,7 +14,7 @@ import { CreatePositionDto } from './dto/position.dto';
 import { CustomBackendResponse } from 'src/interceptors/backend.response';
 import { AuthGuard } from 'src/guards/auth.guard';
 @UseGuards(AuthGuard)
-@Controller('api/v1/position')
+@Controller('position')
 export class PositionController {
   constructor(private readonly positionService: PositionService) {}
 

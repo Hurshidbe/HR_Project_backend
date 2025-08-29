@@ -136,6 +136,7 @@ export class CandidatesController {
     let response: CustomBackendResponse;
     try {
       const deleted = await this.candidatesService.delete(id);
+
       response = new CustomBackendResponse(true, { deleted });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);

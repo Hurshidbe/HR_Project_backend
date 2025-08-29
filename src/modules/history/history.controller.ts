@@ -34,7 +34,8 @@ export class HistoryController {
   async getPositionHistory(@Query() query: any) {
     let response: CustomBackendResponse;
     try {
-      const positionHistory = await this.historyService.getPositionHistory(query);
+      const positionHistory =
+        await this.historyService.getPositionHistory(query);
       response = new CustomBackendResponse(true, { positionHistory });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);
@@ -50,9 +51,9 @@ export class HistoryController {
         this.historyService.getSalaryHistoryByEmployee(employeeId),
         this.historyService.getPositionHistoryByEmployee(employeeId),
       ]);
-      response = new CustomBackendResponse(true, { 
-        salaryHistory, 
-        positionHistory 
+      response = new CustomBackendResponse(true, {
+        salaryHistory,
+        positionHistory,
       });
     } catch (error) {
       response = new CustomBackendResponse(false, {}, [error.message]);

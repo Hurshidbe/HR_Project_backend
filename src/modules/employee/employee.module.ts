@@ -7,7 +7,7 @@ import {
   SalaryHistory,
   SalaryHistorySchema,
 } from '../history/entities/salaryHistory.schema';
-import { PositionSchema } from '../position/entities/position.entity';
+import { PositionHistorySchema } from '../history/entities/positionHistory.schema';
 import { HistoryService } from '../history/history.service';
 import { HistoryModule } from '../history/history.module';
 import { PositionHistory } from '../history/entities/positionHistory.schema';
@@ -20,12 +20,12 @@ import { PositionModule } from '../position/position.module';
     PositionModule,
     MongooseModule.forFeature([
       { name: Employee.name, schema: EmployeeSchema },
-      { name: PositionHistory.name, schema: PositionSchema },
+      { name: PositionHistory.name, schema: PositionHistorySchema },
       { name: SalaryHistory.name, schema: SalaryHistorySchema },
-      { name: Employee.name, schema: EmployeeSchema },
     ]),
   ],
   controllers: [EmployeeController],
   providers: [EmployeeService, HistoryService, PositionService],
+  exports: [EmployeeService],
 })
 export class EmployeeModule {}

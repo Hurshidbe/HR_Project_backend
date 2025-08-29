@@ -83,4 +83,10 @@ export class EmployeeService {
       .populate('department', 'name description')
       .populate('position', 'title description');
   }
+
+  async getAllEmployees() {
+    return this.EmployeeRepo.find()
+      .populate('department', 'name description')
+      .populate('position', 'title description');
+  }
 }

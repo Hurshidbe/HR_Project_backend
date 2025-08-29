@@ -42,7 +42,7 @@ export class HistoryService {
     return this.salaryHistoryRepo
       .find(query)
       .populate('employee', 'fullName email')
-      .sort({ _id: -1 })
+      .sort({ createdAt: -1 })
       .lean();
   }
 

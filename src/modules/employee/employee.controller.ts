@@ -24,7 +24,7 @@ import { EmployeeStatusEnum } from 'src/enums/enums';
 import { Employee } from './entities/employee.schema';
 
 @UseGuards(AuthGuard)
-@Controller('api/v1/employee')
+@Controller('employee')
 export class EmployeeController {
   constructor(
     private readonly employeeService: EmployeeService,
@@ -33,6 +33,18 @@ export class EmployeeController {
     @InjectModel(Employee.name) private readonly EmployeeRepo: Model<Employee>,
   ) {}
   @Get()
+  async getAllEmployees() {
+    let response: CustomBackendResponse;
+    try {
+      const employees = await this.employeeService.getAllEmployees();
+      response = new CustomBackendResponse(true, { employees });
+    } catch (error) {
+      response = new CustomBackendResponse(false, {}, [error.message]);
+    }
+    return response;
+  }
+
+  @Get('all')
   async all(@Query() query: any) {
     let response: CustomBackendResponse;
     const filter: any = {};

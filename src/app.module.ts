@@ -18,6 +18,7 @@ import { BotModule } from './modules/bot/bot.module';
 import { UserModule } from './modules/admins/users.module';
 import { BotUpdate } from './modules/bot/bot';
 import { MessageService } from './modules/bot/message.service';
+import { HistoryService } from './modules/history/history.service';
 dotenv.config();
 
 @Module({
@@ -39,13 +40,13 @@ dotenv.config();
       },
     }),
     SeedModule,
+    HistoryModule,
     BotModule,
     UserModule,
     CandidatesModule,
     DepartmentModule,
     PositionModule,
     EmployeeModule,
-    HistoryModule,
   ],
   controllers: [],
   providers: [

@@ -57,7 +57,7 @@ export class CandidatesService {
       birthDate: isExist.birthDate,
       phoneNumber: isExist.phoneNumber,
       email: isExist.email,
-      tgUsername: isExist.tgUsername,
+      tgUsername: this.normalizeTelegramUsername(isExist.tgUsername),
       region: isExist.region,
       address: isExist.address,
       occupation: isExist.occupation,
@@ -89,5 +89,24 @@ export class CandidatesService {
   async delete(id: string) {
     const deleted = await this.CandidateRepo.deleteOne({ _id: id });
     return deleted;
+  }
+
+  async normalizeTelegramUsername(username: string) {
+    if (!username) return null;
+
+    username = username.trim();
+
+    if (username.startsWith('https://t.me/')) {
+      username = username.replace('https://t.me/', '');
+    } else if (username.startsWith('http://t.me/')) {
+      username = username.replace('http://t.me/', '');
+    } else if (username.startsWith('t.me/')) {
+      username = username.replace('t.me/', '');
+    }
+    if (username.startsWith('@')) {
+      username = username.substring(1);
+    }
+
+    return username;
   }
 }

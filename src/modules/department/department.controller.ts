@@ -16,7 +16,7 @@ import { response } from 'express';
 import { AuthGuard } from 'src/guards/auth.guard';
 
 @UseGuards(AuthGuard)
-@Controller('api/v1/departments')
+@Controller('departments')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 

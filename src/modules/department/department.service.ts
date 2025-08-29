@@ -64,6 +64,7 @@ export class DepartmentService {
     if (!existed) {
       throw new NotFoundException('department not found');
     }
+    await this.positionRepo.deleteMany({ departmentId: id });
     return await this.departmentRepo.findByIdAndDelete(id);
   }
 
