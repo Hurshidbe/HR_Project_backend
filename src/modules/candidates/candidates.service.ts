@@ -91,7 +91,7 @@ export class CandidatesService {
     return deleted;
   }
 
-  async normalizeTelegramUsername(username: string) {
+  normalizeTelegramUsername(username: string) {
     if (!username) return null;
 
     username = username.trim();
