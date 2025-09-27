@@ -9,7 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
-  const defaultOrigins = ['http://localhost:4200', 'http://localhost:3000'];
+  const defaultOrigins = ['http://localhost:5000', 'http://localhost:3000'];
   const allowedOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(',').map((origin) => origin.trim())
     : defaultOrigins;
